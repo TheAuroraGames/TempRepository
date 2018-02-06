@@ -5,7 +5,9 @@ canvas.height = 1024;
 var surface = canvas.getContext("2d");
 //X and Y parameters
 var PlayerData;
+var NoseData;
 //Image Variables
+var Nosey;
 var Robin;
 var uInt;
 // Speed
@@ -21,6 +23,7 @@ window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
 
 createHero();
+createNose();
 
 function update()
 { 
@@ -45,6 +48,17 @@ function createHero()
 	
 }
 
+function createNose()
+{
+	Nosey = new Image();
+	Nosey.src = "../img/Nosefearatu.png";
+	NoseData = {};
+	NoseData.x = 750;
+	NoseData.y = 235;
+	NoseData.width= 250;
+	NoseData.height=450;
+	
+}
 
 function moverobin()
 {
@@ -73,6 +87,7 @@ function render()
 	//Clears Canvas
 	surface.clearRect(0,0,canvas.width,canvas.height);
 	surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	surface.drawImage(Nosey,NoseData.x,NoseData.y,NoseData.width,NoseData.height);
 	
 	
 }
