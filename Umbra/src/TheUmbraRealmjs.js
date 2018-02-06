@@ -15,8 +15,10 @@ var RobinSpeed = 10	;
 
 var leftPressed = false;
 var rightPressed = false;
-//var upPressed = false;
+var upPressed = false;
 //var downPressed = false;
+
+var isJumping = false;
 
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
@@ -44,7 +46,8 @@ function createHero()
 	PlayerData.y = 300;
 	PlayerData.width= 250;
 	PlayerData.height=350;
-	
+	PlayerData.gravity = 0.05;
+	PlayerData.gravitySpeed = 0.00;
 	
 }
 
@@ -66,15 +69,32 @@ function moverobin()
 		PlayerData.x -= RobinSpeed;
 	if (rightPressed == true)
 		PlayerData.x += RobinSpeed;
-	//if (upPressed == true)
-	//	PlayerData.y -= RobinSpeed;
+	if (upPressed == true)
+	{
+		PlayerData.y -= RobinSpeed + PlayerData.gravity;
+			if (PlayerData.y < 200)
+			{
+				upPressed = false;
+			}
+	}
+	else
+	{
+			PlayerData.y += RobinSpeed + PlayerData.gravity;
+	}
+	
 	//if (downPressed == true)
 		//PlayerData.y += RobinSpeed;
 	// Boundaries for Player Ship
+	//PlayerData.y += RobinSpeed + PlayerData.gravity;
 	if (PlayerData.x<0) PlayerData.x =0;
 	if (PlayerData.x>800) PlayerData.x= 800;
-	//if (PlayerData.y<0) PlayerData.y = 0;
-	//if (PlayerData.y>576) PlayerData.y= 576;
+	if (PlayerData.y<0) PlayerData.y = 0;
+	if (PlayerData.y>300) 
+	{
+		PlayerData.y= 300;
+		isJumping = false;
+	}
+	
 }
 
 
@@ -106,9 +126,14 @@ function onKeyDown(event)
 		case 68: // D
 			rightPressed = true;
 			break;
-		//case 87: // W
-			//upPressed = true;
-			//break;
+		case 87: // W
+		if (isJumping == false)
+		{
+			upPressed = true;
+			isJumping = true;
+		}
+			break;
+		
 		//case 83: // S
 			//downPressed = true;
 			//break;
@@ -129,9 +154,9 @@ function onKeyUp(event)
 		case 68: // D
 			rightPressed = false;
 			break;
-		//case 87: // W
+		case 87: // W
 			//upPressed = false;
-			//break;
+			break;
 		//case 83: // S
 			//downPressed = false;
 			//break;
