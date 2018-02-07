@@ -7,6 +7,7 @@ var surface = canvas.getContext("2d");
 var PlayerData;
 var NoseData;
 //Image Variables
+var VampBack;
 var Nosey;
 var Robin;
 var uInt;
@@ -26,6 +27,7 @@ window.addEventListener("keyup", onKeyUp);
 
 createHero();
 createNose();
+createBackground();
 
 function update()
 { 
@@ -36,7 +38,11 @@ function update()
 }
 
 uInt =setInterval(update,33.34);
-
+function createBackground()
+{
+	VampBack = new Image();
+	VampBack.src = "../img/vampire background.png";
+}
 function createHero()
 {
 	Robin = new Image();
@@ -106,6 +112,7 @@ function render()
 {
 	//Clears Canvas
 	surface.clearRect(0,0,canvas.width,canvas.height);
+	surface.drawImage(VampBack,0,0,1024,768);
 	surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	surface.drawImage(Nosey,NoseData.x,NoseData.y,NoseData.width,NoseData.height);
 	
