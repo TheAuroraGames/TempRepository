@@ -1,6 +1,44 @@
 var canvas= document.querySelector("canvas");
 canvas.width = 1024;
 canvas.height = 1024;
+// RobinHP
+
+var robinHP = {
+	x: 50,
+	y: 50,
+	width: 200,
+	height: 20
+};
+var health = 10;
+var maxhealth=10;
+var percent = health/ maxhealth;
+
+var robinHPBorder = {
+	x: 45,
+	y: 45,
+	width: 210,
+	height: 30
+};
+
+// NoseHP
+
+var noseHP = {
+	x: 750,
+	y: 50,
+	width: 200,
+	height: 20
+};
+
+var noseHPBorder = {
+	x: 745,
+	y: 45,
+	width: 210,
+	height: 30
+};
+
+var Nosehealth = 10;
+var Nosemaxhealth=10;
+var Nosepercent = Nosehealth/ Nosemaxhealth;
 
 var surface = canvas.getContext("2d");
 //X and Y parameters
@@ -139,6 +177,18 @@ function render()
 	//Clears Canvas
 	surface.clearRect(0,0,canvas.width,canvas.height);
 	surface.drawImage(VampBack,0,0,1024,768);
+	surface.fillStyle = "black";
+    surface.fillRect(robinHPBorder.x, robinHPBorder.y, robinHPBorder.width, robinHPBorder.height);
+	surface.fillStyle = "red";
+    surface.fillRect(robinHP.x, robinHP.y, robinHP.width, robinHP.height);
+	surface.fillStyle= "green";
+	surface.fillRect(robinHP.x, robinHP.y, robinHP.width * percent, robinHP.height);
+	surface.fillStyle = "black";
+    surface.fillRect(noseHPBorder.x, noseHPBorder.y, noseHPBorder.width, noseHPBorder.height);
+	surface.fillStyle = "red";
+    surface.fillRect(noseHP.x, noseHP.y, noseHP.width, noseHP.height);
+	surface.fillStyle= "green";
+	surface.fillRect(noseHP.x, noseHP.y, noseHP.width * Nosepercent, noseHP.height);
 	if(punchPressed){
 		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	}
