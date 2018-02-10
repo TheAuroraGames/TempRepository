@@ -7,6 +7,7 @@ var surface = canvas.getContext("2d");
 var PlayerData;
 var NoseData;
 //Image Variables
+var RobinPunch;
 var VampBack;
 var Nosey;
 var Robin;
@@ -17,9 +18,12 @@ var RobinSpeed = 10	;
 var leftPressed = false;
 var rightPressed = false;
 var upPressed = false;
+var punchPressed = false;
 //var downPressed = false;
 
 var isJumping = false;
+
+var RobinAnimData;
 
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
@@ -28,9 +32,14 @@ window.addEventListener("keyup", onKeyUp);
 createHero();
 createNose();
 createBackground();
+createRobinPunch();
 
 function update()
 { 
+	if (punchPressed)
+	{
+		Animate(RobinAnimData);
+	}
 	moverobin();
 	render();
 	
@@ -38,6 +47,23 @@ function update()
 }
 
 uInt =setInterval(update,33.34);
+function createRobinPunch()
+{
+	RobinPunch = new Image();
+	RobinPunch.src = "../img/Main_punching.png";
+	RobinAnimData={
+	row :3,
+	col :3,
+	MaxFrame :7,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	};
+	
+}
+
 function createBackground()
 {
 	VampBack = new Image();
@@ -113,13 +139,28 @@ function render()
 	//Clears Canvas
 	surface.clearRect(0,0,canvas.width,canvas.height);
 	surface.drawImage(VampBack,0,0,1024,768);
-	surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	if(punchPressed){
+		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	}
+	else{
+		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	}	
 	surface.drawImage(Nosey,NoseData.x,NoseData.y,NoseData.width,NoseData.height);
+
+}
+
+function Animate(objToAnimate)
+{
+	var currentRow=Math.floor(objToAnimate.currentFrame/objToAnimate.col);
+	var currentCol= objToAnimate.currentFrame % objToAnimate.col;
+	
+	objToAnimate.x= objToAnimate.width *currentCol;
+	objToAnimate.y=objToAnimate.height *currentRow;
+	objToAnimate.currentFrame= 	(objToAnimate.currentFrame+1) %objToAnimate.MaxFrame;
+	
 	
 	
 }
-
-
 
 
 //Key function listeners for movement
@@ -140,11 +181,14 @@ function onKeyDown(event)
 			isJumping = true;
 		}
 			break;
+		case 76: // L
+			punchPressed =true;
+			break;
 		
 		//case 83: // S
 			//downPressed = true;
 			//break;
-		case 32:
+		//case 32:
 		//if(gameOver == true)
 			//restart();
 			//break;
@@ -161,9 +205,12 @@ function onKeyUp(event)
 		case 68: // D
 			rightPressed = false;
 			break;
-		case 87: // W
-			//upPressed = false;
+		case 76: // L
+			punchPressed =false;
 			break;
+		//case 87: // W
+			//upPressed = false;
+			//break;
 		//case 83: // S
 			//downPressed = false;
 			//break;
