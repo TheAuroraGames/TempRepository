@@ -75,7 +75,7 @@ function createHero()
 	Robin.src = "../img/Main.character.png";
 	PlayerData = {};
 	PlayerData.x = 0;
-	PlayerData.y = 300;
+	PlayerData.y = 400;
 	PlayerData.width= 250;
 	PlayerData.height=350;
 	PlayerData.gravity = 0.05;
@@ -89,7 +89,7 @@ function createNose()
 	Nosey.src = "../img/Nosefearatu.png";
 	NoseData = {};
 	NoseData.x = 750;
-	NoseData.y = 235;
+	NoseData.y = 335;
 	NoseData.width= 250;
 	NoseData.height=450;
 	
@@ -104,7 +104,7 @@ function moverobin()
 	if (upPressed == true)
 	{
 		PlayerData.y -= RobinSpeed + PlayerData.gravity;
-			if (PlayerData.y < 200)
+			if (PlayerData.y < 300)
 			{
 				upPressed = false;
 			}
@@ -120,10 +120,10 @@ function moverobin()
 	//PlayerData.y += RobinSpeed + PlayerData.gravity;
 	if (PlayerData.x<0) PlayerData.x =0;
 	if (PlayerData.x>800) PlayerData.x= 800;
-	if (PlayerData.y<0) PlayerData.y = 0;
-	if (PlayerData.y>300) 
+	if (PlayerData.y<100) PlayerData.y = 100;
+	if (PlayerData.y>400) 
 	{
-		PlayerData.y= 300;
+		PlayerData.y= 400;
 		isJumping = false;
 	}
 	
