@@ -3,6 +3,8 @@ canvas.width = 1024;
 canvas.height = 1024;
 // RobinHP
 
+
+
 var robinHP = {
 	x: 50,
 	y: 50,
@@ -142,6 +144,7 @@ function moverobin()
 	if (upPressed == true)
 	{
 		PlayerData.y -= RobinSpeed + PlayerData.gravity;
+
 			if (PlayerData.y < 300)
 			{
 				upPressed = false;
@@ -229,6 +232,7 @@ function onKeyDown(event)
 		{
 			upPressed = true;
 			isJumping = true;
+			
 		}
 			break;
 		case 76: // L
