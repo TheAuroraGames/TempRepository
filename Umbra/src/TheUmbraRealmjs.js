@@ -47,6 +47,8 @@ var surface = canvas.getContext("2d");
 var PlayerData;
 var NoseData;
 //Image Variables
+var RobinWalk;
+var RobinJump;
 var RobinPunch;
 var VampBack;
 var Nosey;
@@ -62,9 +64,9 @@ var punchPressed = false;
 //var downPressed = false;
 
 var isJumping = false;
-
+var RobinJumpData;
 var RobinAnimData;
-
+var RobinWalkData;
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
@@ -73,12 +75,21 @@ createHero();
 createNose();
 createBackground();
 createRobinPunch();
-
+createRobinJump();
+createRobinWalk();
 function update()
 { 
+	if (isJumping)
+		Animate(RobinJumpData);
+	
 	if (punchPressed)
 	{
 		Animate(RobinAnimData);
+	}
+	
+	if(leftPressed || rightPressed)
+	{
+		Animate(RobinWalkData);
 	}
 	moverobin();
 	render();
@@ -87,6 +98,42 @@ function update()
 }
 
 uInt =setInterval(update,33.34);
+function createRobinWalk()
+{
+	RobinWalk = new Image();
+	RobinWalk.src = "../img/main_walking.png";
+	RobinWalkData={
+	row :2,
+	col :2,
+	MaxFrame :4,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	};
+	
+}
+
+function createRobinJump()
+{
+	RobinJump = new Image();
+	RobinJump.src = "../img/main_jumping.png";
+	RobinJumpData={
+	row :2,
+	col :2,
+	MaxFrame :3,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	JumpSound: new Audio()
+	};
+	
+	RobinJumpData.JumpSound.src = "../audio/jump.wav";
+}
+
 function createRobinPunch()
 {
 	RobinPunch = new Image();
@@ -100,8 +147,10 @@ function createRobinPunch()
 	width:512,
 	height:512,
 	currentFrame:0,
+	PunchSound: new Audio()
 	};
 	
+	RobinAnimData.PunchSound.src = "../audio/punch.wav";
 }
 
 function createBackground()
@@ -194,6 +243,13 @@ function render()
 	surface.fillRect(noseHP.x, noseHP.y, noseHP.width * Nosepercent, noseHP.height);
 	if(punchPressed){
 		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	}else if(isJumping){
+		
+		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	}
+	else if(leftPressed||rightPressed){
+		
+		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	}
 	else{
 		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
@@ -232,11 +288,12 @@ function onKeyDown(event)
 		{
 			upPressed = true;
 			isJumping = true;
-			
+			RobinJumpData.JumpSound.play();
 		}
 			break;
 		case 76: // L
 			punchPressed =true;
+			RobinAnimData.PunchSound.play();
 			break;
 		
 		//case 83: // S
