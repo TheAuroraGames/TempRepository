@@ -6,6 +6,7 @@ canvas.height = 1024;
 
 
 var robinHP = {
+	// the parameters of the health bars.
 	x: 50,
 	y: 50,
 	width: 200,
@@ -79,14 +80,15 @@ createRobinJump();
 createRobinWalk();
 function update()
 { 
+// if we are in jumping state then it will animation the jumping.
 	if (isJumping)
 		Animate(RobinJumpData);
-	
+//if the punch button is pressed then it animates the punching.
 	if (punchPressed)
 	{
 		Animate(RobinAnimData);
 	}
-	
+//if the left or right button is pressed then the walking animation is pressed.
 	if(leftPressed || rightPressed)
 	{
 		Animate(RobinWalkData);
@@ -98,18 +100,26 @@ function update()
 }
 
 uInt =setInterval(update,33.34);
+
+//animation for walking
 function createRobinWalk()
 {
+//this loads the spritesheet for walking
 	RobinWalk = new Image();
 	RobinWalk.src = "../img/main_walking.png";
 	RobinWalkData={
+//this sets the amount of rows and columns in the sprite sheet
 	row :2,
 	col :2,
+// this is the max number of frames in the sprite sheet.
 	MaxFrame :4,
+//this is the iniial x and y position of the first frame in the animation
 	x:0,
 	y:0,
+// this is the size of each frame.
 	width:512,
 	height:512,
+// this is for which frame we start on.
 	currentFrame:0,
 	};
 	
@@ -128,6 +138,7 @@ function createRobinJump()
 	width:512,
 	height:512,
 	currentFrame:0,
+	// Audio is played every time the player jumps
 	JumpSound: new Audio()
 	};
 	
@@ -147,6 +158,7 @@ function createRobinPunch()
 	width:512,
 	height:512,
 	currentFrame:0,
+	// Audio is played every time the player punches
 	PunchSound: new Audio()
 	};
 	
@@ -167,6 +179,7 @@ function createHero()
 	PlayerData.y = 400;
 	PlayerData.width= 250;
 	PlayerData.height=350;
+	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
 	
@@ -186,14 +199,16 @@ function createNose()
 
 function moverobin()
 {
+	// movement of the player.
 	if (leftPressed == true)
 		PlayerData.x -= RobinSpeed;
 	if (rightPressed == true)
 		PlayerData.x += RobinSpeed;
 	if (upPressed == true)
 	{
+		// formula used for gravity.
 		PlayerData.y -= RobinSpeed + PlayerData.gravity;
-
+		//if playersdata.y reaches 300 come back down.
 			if (PlayerData.y < 300)
 			{
 				upPressed = false;
@@ -201,13 +216,13 @@ function moverobin()
 	}
 	else
 	{
+		//formula used for gravity.
 			PlayerData.y += RobinSpeed + PlayerData.gravity;
 	}
 	
 	//if (downPressed == true)
 		//PlayerData.y += RobinSpeed;
-	// Boundaries for Player Ship
-	//PlayerData.y += RobinSpeed + PlayerData.gravity;
+
 	if (PlayerData.x<0) PlayerData.x =0;
 	if (PlayerData.x>800) PlayerData.x= 800;
 	if (PlayerData.y<100) PlayerData.y = 100;
@@ -228,29 +243,40 @@ function render()
 {
 	//Clears Canvas
 	surface.clearRect(0,0,canvas.width,canvas.height);
+	//draws background
 	surface.drawImage(VampBack,0,0,1024,768);
+	//creates the health border for player
 	surface.fillStyle = "black";
     surface.fillRect(robinHPBorder.x, robinHPBorder.y, robinHPBorder.width, robinHPBorder.height);
+	//creates the rectangle behind the health bar to give illusion of damage taken.
 	surface.fillStyle = "red";
     surface.fillRect(robinHP.x, robinHP.y, robinHP.width, robinHP.height);
+	//The health bar that is the only changing object.
 	surface.fillStyle= "green";
 	surface.fillRect(robinHP.x, robinHP.y, robinHP.width * percent, robinHP.height);
+	// creates the health border for vampire.
 	surface.fillStyle = "black";
     surface.fillRect(noseHPBorder.x, noseHPBorder.y, noseHPBorder.width, noseHPBorder.height);
+	// creates the rectangle behind the health bar to give illusion of damage taken.
 	surface.fillStyle = "red";
     surface.fillRect(noseHP.x, noseHP.y, noseHP.width, noseHP.height);
+	// creates the health bar.
 	surface.fillStyle= "green";
 	surface.fillRect(noseHP.x, noseHP.y, noseHP.width * Nosepercent, noseHP.height);
+	//if the punch button is pressed draws the punching animation.
 	if(punchPressed){
 		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	// if in jumping state and punching isnt pressed draws the jumping animation.
 	}else if(isJumping){
 		
 		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	}
+	//if player is not in punching state or in jumping state draws the walking animation.
 	else if(leftPressed||rightPressed){
 		
 		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	}
+	// if player is not in any other state draws the basic sprite.
 	else{
 		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	}	
@@ -260,6 +286,7 @@ function render()
 
 function Animate(objToAnimate)
 {
+	//math to draw the animations
 	var currentRow=Math.floor(objToAnimate.currentFrame/objToAnimate.col);
 	var currentCol= objToAnimate.currentFrame % objToAnimate.col;
 	
