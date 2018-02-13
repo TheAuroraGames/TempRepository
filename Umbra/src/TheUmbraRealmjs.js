@@ -54,7 +54,17 @@ var RobinPunch;
 var VampBack;
 var Nosey;
 var Robin;
+var VampDeath;
+
+
+
+
 var uInt;
+
+
+
+
+
 // Speed
 var RobinSpeed = 10	;
 
@@ -64,10 +74,14 @@ var upPressed = false;
 var punchPressed = false;
 //var downPressed = false;
 
+
+var vampDying = false; 
+var vampDead = false;
 var isJumping = false;
 var RobinJumpData;
 var RobinAnimData;
 var RobinWalkData;
+var vampDeathData;
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
@@ -78,6 +92,12 @@ createBackground();
 createRobinPunch();
 createRobinJump();
 createRobinWalk();
+createVampdeath();
+
+
+
+
+
 //Checking collision function the parameters of this function are given input in the update function.
 function checkCollision(player1animdata,player1data,player2data,targetframe)
 {	
@@ -118,11 +138,21 @@ function update()
 				Nosehealth --;
 				Nosepercent = Nosehealth/Nosemaxhealth;
 				if (Nosepercent <= 0){
+					vampDying = true;
+					
 					//Fill in later with proper level ending.
 					Nosepercent = 0;
+
 				}
+				
 		}
 	}
+	if(vampDying&&vampDead==false)
+	{
+		vampDead= Animate(vampDeathData);
+		
+	}
+
 //if the left or right button is pressed then the walking animation is pressed.
 	if(leftPressed || rightPressed)
 	{
@@ -156,6 +186,7 @@ function createRobinWalk()
 	height:512,
 // this is for which frame we start on.
 	currentFrame:0,
+	looping: true,
 	};
 	
 }
@@ -173,6 +204,7 @@ function createRobinJump()
 	width:512,
 	height:512,
 	currentFrame:0,
+	looping: true,
 	// Audio is played every time the player jumps
 	JumpSound: new Audio()
 	};
@@ -193,6 +225,7 @@ function createRobinPunch()
 	width:512,
 	height:512,
 	currentFrame:0,
+	looping: true,
 	// Audio is played every time the player punches
 	PunchSound: new Audio()
 	};
@@ -232,6 +265,29 @@ function createNose()
 	
 }
 
+function createVampdeath()
+{
+	vampDeath = new Image();
+	vampDeath.src = "../img/vamp_death.png";
+	vampDeathData = {
+	row :4,
+	col :4,
+	MaxFrame :15,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping: false,
+	// Audio is played every time the player jumps
+	// DeadSound: new Audio()
+	};
+	
+// add sound
+	
+}
+
+
 function moverobin()
 {
 	// movement of the player.
@@ -268,6 +324,7 @@ function moverobin()
 	}
 	
 }
+
 
 
 
@@ -312,10 +369,23 @@ function render()
 		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	}
 	// if player is not in any other state draws the basic sprite.
+	
 	else{
 		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	}	
-	surface.drawImage(Nosey,NoseData.x,NoseData.y,NoseData.width,NoseData.height);
+	if (vampDead == false)
+	{
+		if(vampDying)
+		{
+			surface.drawImage(vampDeath, vampDeathData.x, vampDeathData.y, 512,512, NoseData.x, NoseData.y, NoseData.width, NoseData.height);
+		}
+		else
+		{
+			surface.drawImage(Nosey,NoseData.x,NoseData.y,NoseData.width,NoseData.height);
+		}
+	}
+	
+	
 
 }
 
@@ -327,9 +397,25 @@ function Animate(objToAnimate)
 	
 	objToAnimate.x= objToAnimate.width *currentCol;
 	objToAnimate.y=objToAnimate.height *currentRow;
-	objToAnimate.currentFrame= 	(objToAnimate.currentFrame+1) %objToAnimate.MaxFrame;
 	
-	
+	// loop animation
+	if(objToAnimate.looping == true)
+	{
+		objToAnimate.currentFrame= 	(objToAnimate.currentFrame+1) %objToAnimate.MaxFrame;
+	}
+	else //dont loop
+	{
+		if (objToAnimate.currentFrame == objToAnimate.MaxFrame-1)
+		{
+			console.log("dont loop");
+			return true;
+		}	
+		else 
+		{
+			objToAnimate.currentFrame= 	(objToAnimate.currentFrame+1) %objToAnimate.MaxFrame;
+		}
+	}
+	return false;
 	
 }
 
