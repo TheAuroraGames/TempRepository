@@ -42,6 +42,7 @@ var noseHPBorder = {
 var Nosehealth = 10;
 var Nosemaxhealth=10;
 var Nosepercent = Nosehealth/ Nosemaxhealth;
+var NoseSpeed = 5;
 
 var surface = canvas.getContext("2d");
 //X and Y parameters
@@ -66,7 +67,7 @@ var uInt;
 
 
 // Speed
-var RobinSpeed = 10	;
+var RobinSpeed = 15	;
 
 var leftPressed = false;
 var rightPressed = false;
@@ -93,7 +94,7 @@ createRobinPunch();
 createRobinJump();
 createRobinWalk();
 createVampdeath();
-
+createNoseAI();
 
 
 
@@ -159,6 +160,7 @@ function update()
 		Animate(RobinWalkData);
 	}
 	moverobin();
+	createNoseAI();
 	render();
 	
 	
@@ -263,6 +265,20 @@ function createNose()
 	NoseData.width= 250;
 	NoseData.height=450;
 	
+}
+
+function createNoseAI()
+{
+	if (NoseData.x != PlayerData.x && NoseData.y != PlayerData.y){
+		if (Math.floor(Math.random() * 2) == 1){
+			if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + NoseSpeed;
+			else if  (NoseData.x > PlayerData.x) NoseData.x = NoseData.x - NoseSpeed;
+		}
+	}
+	else {
+		if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + NoseSpeed;
+		else if (NoseData.x > PlayerData.x) NoseData.x =  NoseData.x - NoseSpeed;
+	}
 }
 
 function createVampdeath()
