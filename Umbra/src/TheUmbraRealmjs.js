@@ -78,15 +78,16 @@ createBackground();
 createRobinPunch();
 createRobinJump();
 createRobinWalk();
-
+//Checking collision function the parameters of this function are given input in the update function.
 function checkCollision(player1animdata,player1data,player2data,targetframe)
 {	
+//if the punching animation reaches the target frame 1 part of the collision is achieved.
 	if(player1animdata.currentFrame== targetframe){
 	
-		//check if player1 and 2 collide
+		//checks whats the players right edge is.
 		var player1Edge = player1data.x + player1data.width;
 		
-
+		// this checks if players right edge hits the enemy.
 		if (player1Edge>= player2data.x&& player1Edge<=(player2data.x + player2data.width)){
 			
 			return true;
@@ -110,9 +111,10 @@ function update()
 	if (punchPressed)
 	{
 		Animate(RobinAnimData);
+		//checking collision with these 3 parameters
 		if(checkCollision(RobinAnimData,PlayerData,NoseData,6))
 		{
-		
+		// if theses parameters pass then we do DMG
 				Nosehealth --;
 				Nosepercent = Nosehealth/Nosemaxhealth;
 				if (Nosepercent <= 0){
