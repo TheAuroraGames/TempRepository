@@ -165,9 +165,9 @@ function createRobinJump()
 	RobinJump = new Image();
 	RobinJump.src = "../img/main_jumping.png";
 	RobinJumpData={
-	row :2,
-	col :2,
-	MaxFrame :3,
+	row :4,
+	col :3,
+	MaxFrame :10,
 	x:0,
 	y:0,
 	width:512,
