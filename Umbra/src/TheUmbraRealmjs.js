@@ -78,6 +78,29 @@ createBackground();
 createRobinPunch();
 createRobinJump();
 createRobinWalk();
+
+function checkCollision(player1animdata,player1data,player2data,targetframe)
+{	
+	if(player1animdata.currentFrame== targetframe){
+	
+		//check if player1 and 2 collide
+		var player1Edge = player1data.x + player1data.width;
+		
+
+		if (player1Edge>= player2data.x&& player1Edge<=(player2data.x + player2data.width)){
+			
+			return true;
+		}
+		return false;
+		
+	}
+	
+	return false;
+		
+	
+}
+
+
 function update()
 { 
 // if we are in jumping state then it will animation the jumping.
@@ -87,6 +110,16 @@ function update()
 	if (punchPressed)
 	{
 		Animate(RobinAnimData);
+		if(checkCollision(RobinAnimData,PlayerData,NoseData,6))
+		{
+		
+				Nosehealth --;
+				Nosepercent = Nosehealth/Nosemaxhealth;
+				if (Nosepercent <= 0){
+					//Fill in later with proper level ending.
+					Nosepercent = 0;
+				}
+		}
 	}
 //if the left or right button is pressed then the walking animation is pressed.
 	if(leftPressed || rightPressed)
