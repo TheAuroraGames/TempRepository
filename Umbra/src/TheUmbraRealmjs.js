@@ -3,7 +3,7 @@ canvas.width = 1024;
 canvas.height = 1024;
 // RobinHP
 
-
+var frameSpeed=33.34;
 
 var robinHP = {
 	// the parameters of the health bars.
@@ -57,6 +57,7 @@ var Nosey;
 var Robin;
 var VampDeath;
 
+var Uptime = Date.now();
 
 
 
@@ -94,16 +95,19 @@ createRobinPunch();
 createRobinJump();
 createRobinWalk();
 createVampdeath();
-createNoseAI();
 
 
+function loadNextLevel()
+{
+	window.location.href = 'level2.html';
+}
 
 
 //Checking collision function the parameters of this function are given input in the update function.
 function checkCollision(player1animdata,player1data,player2data,targetframe)
 {	
 //if the punching animation reaches the target frame 1 part of the collision is achieved.
-	if(player1animdata.currentFrame== targetframe){
+	if(Math.floor(player1animdata.currentFrame)== targetframe){
 	
 		//checks whats the players right edge is.
 		var player1Edge = player1data.x + player1data.width;
@@ -125,13 +129,20 @@ function checkCollision(player1animdata,player1data,player2data,targetframe)
 
 function update()
 { 
+	var now = Date.now();
+	var dt = (now - Uptime)/frameSpeed;
+	
+	if (typeof dt == 'undefined') dt=1;
+	
+	Uptime = now;
+	
 // if we are in jumping state then it will animation the jumping.
 	if (isJumping)
-		Animate(RobinJumpData);
+		Animate(RobinJumpData,dt);
 //if the punch button is pressed then it animates the punching.
 	if (punchPressed)
 	{
-		Animate(RobinAnimData);
+		Animate(RobinAnimData,dt);
 		//checking collision with these 3 parameters
 		if(checkCollision(RobinAnimData,PlayerData,NoseData,6))
 		{
@@ -150,23 +161,23 @@ function update()
 	}
 	if(vampDying&&vampDead==false)
 	{
-		vampDead= Animate(vampDeathData);
+		vampDead= Animate(vampDeathData,dt);
 		
 	}
 
 //if the left or right button is pressed then the walking animation is pressed.
 	if(leftPressed || rightPressed)
 	{
-		Animate(RobinWalkData);
+		Animate(RobinWalkData,dt);
 	}
-	moverobin();
-	createNoseAI();
+	moverobin(dt);
+	moveNoseAI(dt);
 	render();
 	
 	
 }
 
-uInt =setInterval(update,33.34);
+uInt =setInterval(update,frameSpeed);
 
 //animation for walking
 function createRobinWalk()
@@ -267,18 +278,24 @@ function createNose()
 	
 }
 
-function createNoseAI()
+function moveNoseAI(deltaTime)
 {
 	if (NoseData.x != PlayerData.x && NoseData.y != PlayerData.y){
 		if (Math.floor(Math.random() * 2) == 1){
-			if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + NoseSpeed;
-			else if  (NoseData.x > PlayerData.x) NoseData.x = NoseData.x - NoseSpeed;
+			if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + (NoseSpeed*deltaTime);
+			else if  (NoseData.x > PlayerData.x) NoseData.x = NoseData.x - (NoseSpeed*deltaTime);
 		}
 	}
 	else {
-		if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + NoseSpeed;
-		else if (NoseData.x > PlayerData.x) NoseData.x =  NoseData.x - NoseSpeed;
+		if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + (NoseSpeed*deltaTime);
+		else if (NoseData.x > PlayerData.x) NoseData.x =  NoseData.x - (NoseSpeed*deltaTime);
 	}
+	if (NoseData.x<0) NoseData.x =0;
+	if (NoseData.x>800) NoseData.x= 800;
+	
+	if (NoseData.x==NaN) NoseData.x = 750;
+	
+	console.log(NoseData.x + "" + deltaTime);
 }
 
 function createVampdeath()
@@ -304,17 +321,17 @@ function createVampdeath()
 }
 
 
-function moverobin()
+function moverobin(deltaTime)
 {
 	// movement of the player.
 	if (leftPressed == true)
-		PlayerData.x -= RobinSpeed;
+		PlayerData.x -= RobinSpeed*deltaTime;
 	if (rightPressed == true)
-		PlayerData.x += RobinSpeed;
+		PlayerData.x += RobinSpeed*deltaTime;
 	if (upPressed == true)
 	{
 		// formula used for gravity.
-		PlayerData.y -= RobinSpeed + PlayerData.gravity;
+		PlayerData.y -= (RobinSpeed + PlayerData.gravity)*deltaTime;
 		//if playersdata.y reaches 300 come back down.
 			if (PlayerData.y < 300)
 			{
@@ -324,7 +341,7 @@ function moverobin()
 	else
 	{
 		//formula used for gravity.
-			PlayerData.y += RobinSpeed + PlayerData.gravity;
+			PlayerData.y += (RobinSpeed + PlayerData.gravity)*deltaTime;
 	}
 	
 	//if (downPressed == true)
@@ -405,11 +422,12 @@ function render()
 
 }
 
-function Animate(objToAnimate)
+function Animate(objToAnimate,deltaTime)
 {
+
 	//math to draw the animations
 	var currentRow=Math.floor(objToAnimate.currentFrame/objToAnimate.col);
-	var currentCol= objToAnimate.currentFrame % objToAnimate.col;
+	var currentCol= Math.floor(objToAnimate.currentFrame % objToAnimate.col);
 	
 	objToAnimate.x= objToAnimate.width *currentCol;
 	objToAnimate.y=objToAnimate.height *currentRow;
@@ -417,18 +435,17 @@ function Animate(objToAnimate)
 	// loop animation
 	if(objToAnimate.looping == true)
 	{
-		objToAnimate.currentFrame= 	(objToAnimate.currentFrame+1) %objToAnimate.MaxFrame;
+		objToAnimate.currentFrame= 	((objToAnimate.currentFrame+1)*deltaTime) %objToAnimate.MaxFrame;
 	}
 	else //dont loop
 	{
-		if (objToAnimate.currentFrame == objToAnimate.MaxFrame-1)
+		if (Math.floor(objToAnimate.currentFrame) >= objToAnimate.MaxFrame-1)
 		{
-			console.log("dont loop");
 			return true;
 		}	
 		else 
 		{
-			objToAnimate.currentFrame= 	(objToAnimate.currentFrame+1) %objToAnimate.MaxFrame;
+			objToAnimate.currentFrame= 	((objToAnimate.currentFrame+1)*deltaTime)%objToAnimate.MaxFrame;
 		}
 	}
 	return false;
@@ -459,14 +476,15 @@ function onKeyDown(event)
 			punchPressed =true;
 			RobinAnimData.PunchSound.play();
 			break;
+		case 32:
+		if(vampDead == true)
+			loadNextLevel();
+			break;
 		
 		//case 83: // S
 			//downPressed = true;
 			//break;
-		//case 32:
-		//if(gameOver == true)
-			//restart();
-			//break;
+
 			
 	} 
 }
