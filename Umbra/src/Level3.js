@@ -1,9 +1,9 @@
 var canvas= document.querySelector("canvas");
 canvas.width = 1024;
 canvas.height = 1024;
-// RobinHP
 
 var frameSpeed=33.34;
+
 
 var robinHP = {
 	// the parameters of the health bars.
@@ -23,39 +23,37 @@ var robinHPBorder = {
 	height: 30
 };
 
-// NoseHP
-
-var noseHP = {
+var FrankHP = {
 	x: 750,
 	y: 50,
 	width: 200,
 	height: 20
 };
 
-var noseHPBorder = {
+var FrankHPBorder = {
 	x: 745,
 	y: 45,
 	width: 210,
 	height: 30
 };
 
-var Nosehealth = 10;
-var Nosemaxhealth=10;
-var Nosepercent = Nosehealth/ Nosemaxhealth;
-var NoseSpeed = 5;
+var FrankHealth = 50;
+var FrankMaxHealth=50;
+var FrankPercent = FrankHealth/ FrankMaxHealth;
+var FrankSpeed = 3;
 
 var surface = canvas.getContext("2d");
 //X and Y parameters
 var PlayerData;
-var NoseData;
+var FrankData;
 //Image Variables
 var RobinWalk;
 var RobinJump;
 var RobinPunch;
-var VampBack;
-var Nosey;
+var FrankBack;
+var Franky;
 var Robin;
-var VampDeath;
+var FrankDeath;
 
 var Uptime = Date.now();
 
@@ -63,45 +61,36 @@ var Uptime = Date.now();
 
 var uInt;
 
-
-
-
-
-// Speed
 var RobinSpeed = 15	;
 
 var leftPressed = false;
 var rightPressed = false;
 var upPressed = false;
 var punchPressed = false;
-//var downPressed = false;
 
-
-var vampDying = false; 
-var vampDead = false;
+var FrankDying = false; 
+var FrankDead = false;
 var isJumping = false;
 var RobinJumpData;
 var RobinAnimData;
 var RobinWalkData;
-var vampDeathData;
+var FrankDeathData;
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
 
 createHero();
-createNose();
+createFrank();
 createBackground();
 createRobinPunch();
 createRobinJump();
 createRobinWalk();
-createVampdeath();
-
+createFrankDeath();
 
 function loadNextLevel()
 {
 	window.location.href = 'level3.html';
 }
-
 
 //Checking collision function the parameters of this function are given input in the update function.
 function checkCollision(player1animdata,player1data,player2data,targetframe)
@@ -144,24 +133,24 @@ function update()
 	{
 		Animate(RobinAnimData,dt);
 		//checking collision with these 3 parameters
-		if(checkCollision(RobinAnimData,PlayerData,NoseData,6))
+		if(checkCollision(RobinAnimData,PlayerData,FrankData,6))
 		{
 		// if theses parameters pass then we do DMG
-				Nosehealth --;
-				Nosepercent = Nosehealth/Nosemaxhealth;
-				if (Nosepercent <= 0){
-					vampDying = true;
+				FrankHealth --;
+				FrankPercent = FrankHealth/FrankMaxHealth;
+				if (FrankPercent <= 0){
+					FrankDying = true;
 					
 					//Fill in later with proper level ending.
-					Nosepercent = 0;
+					FrankPercent = 0;
 
 				}
 				
 		}
 	}
-	if(vampDying&&vampDead==false)
+	if(FrankDying&&FrankDead==false)
 	{
-		vampDead= Animate(vampDeathData,dt);
+		FrankDead= Animate(FrankDeathData,dt);
 		
 	}
 
@@ -171,7 +160,7 @@ function update()
 		Animate(RobinWalkData,dt);
 	}
 	moverobin(dt);
-	moveNoseAI(dt);
+	moveFrankAI(dt);
 	render();
 	
 	
@@ -248,9 +237,10 @@ function createRobinPunch()
 
 function createBackground()
 {
-	VampBack = new Image();
-	VampBack.src = "../img/vampire background.png";
+	FrankBack = new Image();
+	//VampBack.src = "../img/vampire background.png";
 }
+
 function createHero()
 {
 	Robin = new Image();
@@ -266,46 +256,45 @@ function createHero()
 	
 }
 
-function createNose()
+function createFrank()
 {
-	Nosey = new Image();
-	Nosey.src = "../img/Nosefearatu.png";
-	NoseData = {};
-	NoseData.x = 750;
-	NoseData.y = 335;
-	NoseData.width= 250;
-	NoseData.height=450;
-	
+	Franky = new Image();
+	Franky.src = "../img/Frankenstein.png";
+	FrankData = {};
+	FrankData.x = 750;
+	FrankData.y = 335;
+	FrankData.width= 250;
+	FrankData.height=450;
 }
 
-function moveNoseAI(deltaTime)
+function moveFrankAI(deltaTime)
 {
-	if (NoseData.x != PlayerData.x && NoseData.y != PlayerData.y){
+	if (FrankData.x != PlayerData.x && FrankData.y != PlayerData.y){
 		if (Math.floor(Math.random() * 2) == 1){
-			if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + (NoseSpeed*deltaTime);
-			else if  (NoseData.x > PlayerData.x) NoseData.x = NoseData.x - (NoseSpeed*deltaTime);
+			if (FrankData.x < PlayerData.x) FrankData.x = FrankData.x + (FrankSpeed*deltaTime);
+			else if  (FrankData.x > PlayerData.x) FrankData.x = FrankData.x - (FrankSpeed*deltaTime);
 		}
 	}
 	else {
-		if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + (NoseSpeed*deltaTime);
-		else if (NoseData.x > PlayerData.x) NoseData.x =  NoseData.x - (NoseSpeed*deltaTime);
+		if (FrankData.x < PlayerData.x) FrankData.x = FrankData.x + (FrankSpeed*deltaTime);
+		else if (FrankData.x > PlayerData.x) FrankData.x =  FrankData.x - (FrankSpeed*deltaTime);
 	}
-	if (NoseData.x<0) NoseData.x =0;
-	if (NoseData.x>800) NoseData.x= 800;
+	if (FrankData.x<0) FrankData.x =0;
+	if (FrankData.x>800) FrankData.x= 800;
 	
-	if (NoseData.x==NaN) NoseData.x = 750;
+	if (FrankData.x==NaN) FrankData.x = 750;
 	
-	console.log(NoseData.x + "" + deltaTime);
+	
 }
 
-function createVampdeath()
+function createFrankDeath()
 {
-	vampDeath = new Image();
-	vampDeath.src = "../img/vamp_death.png";
-	vampDeathData = {
-	row :4,
-	col :4,
-	MaxFrame :15,
+	FrankDeath = new Image();
+	FrankDeath.src = "../img/Zombie_Death.png";
+	FrankDeathData = {
+	row :3,
+	col :2,
+	MaxFrame :5,
 	x:0,
 	y:0,
 	width:512,
@@ -319,7 +308,6 @@ function createVampdeath()
 // add sound
 	
 }
-
 
 function moverobin(deltaTime)
 {
@@ -358,18 +346,12 @@ function moverobin(deltaTime)
 	
 }
 
-
-
-
-
-
-
 function render()
 {
 	//Clears Canvas
 	surface.clearRect(0,0,canvas.width,canvas.height);
 	//draws background
-	surface.drawImage(VampBack,0,0,1024,768);
+	surface.drawImage(FrankBack,0,0,1024,768);
 	//creates the health border for player
 	surface.fillStyle = "black";
     surface.fillRect(robinHPBorder.x, robinHPBorder.y, robinHPBorder.width, robinHPBorder.height);
@@ -381,13 +363,13 @@ function render()
 	surface.fillRect(robinHP.x, robinHP.y, robinHP.width * percent, robinHP.height);
 	// creates the health border for vampire.
 	surface.fillStyle = "black";
-    surface.fillRect(noseHPBorder.x, noseHPBorder.y, noseHPBorder.width, noseHPBorder.height);
+    surface.fillRect(FrankHPBorder.x, FrankHPBorder.y, FrankHPBorder.width, FrankHPBorder.height);
 	// creates the rectangle behind the health bar to give illusion of damage taken.
 	surface.fillStyle = "red";
-    surface.fillRect(noseHP.x, noseHP.y, noseHP.width, noseHP.height);
+    surface.fillRect(FrankHP.x, FrankHP.y, FrankHP.width, FrankHP.height);
 	// creates the health bar.
 	surface.fillStyle= "green";
-	surface.fillRect(noseHP.x, noseHP.y, noseHP.width * Nosepercent, noseHP.height);
+	surface.fillRect(FrankHP.x, FrankHP.y, FrankHP.width * FrankPercent, FrankHP.height);
 	//if the punch button is pressed draws the punching animation.
 	if(punchPressed){
 		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
@@ -406,15 +388,15 @@ function render()
 	else{
 		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	}	
-	if (vampDead == false)
+	if (FrankDead == false)
 	{
-		if(vampDying)
+		if(FrankDying)
 		{
-			surface.drawImage(vampDeath, vampDeathData.x, vampDeathData.y, 512,512, NoseData.x, NoseData.y, NoseData.width, NoseData.height);
+			surface.drawImage(FrankDeath, FrankDeathData.x, FrankDeathData.y, 512,512, FrankData.x, FrankData.y, FrankData.width, FrankData.height);
 		}
 		else
 		{
-			surface.drawImage(Nosey,NoseData.x,NoseData.y,NoseData.width,NoseData.height);
+			surface.drawImage(Franky,FrankData.x,FrankData.y,FrankData.width,FrankData.height);
 		}
 	}
 	
@@ -477,7 +459,7 @@ function onKeyDown(event)
 			RobinAnimData.PunchSound.play();
 			break;
 		case 32:
-		if(vampDead == true)
+		if(FrankDead == true)
 			loadNextLevel();
 			break;
 		
@@ -488,6 +470,7 @@ function onKeyDown(event)
 			
 	} 
 }
+
 function onKeyUp(event)
 {
 	switch (event.keyCode)
