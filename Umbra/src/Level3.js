@@ -292,9 +292,9 @@ function createFrankDeath()
 	FrankDeath = new Image();
 	FrankDeath.src = "../img/Zombie_Death.png";
 	FrankDeathData = {
-	row :3,
-	col :2,
-	MaxFrame :5,
+	row :5,
+	col :4,
+	MaxFrame :20,
 	x:0,
 	y:0,
 	width:512,
