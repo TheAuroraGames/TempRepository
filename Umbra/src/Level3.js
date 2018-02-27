@@ -238,7 +238,7 @@ function createRobinPunch()
 function createBackground()
 {
 	FrankBack = new Image();
-	//VampBack.src = "../img/vampire background.png";
+	FrankBack.src = "../img/laboratory.png";
 }
 
 function createHero()
