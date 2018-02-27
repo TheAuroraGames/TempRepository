@@ -262,7 +262,7 @@ function createFrank()
 	Franky.src = "../img/Frankenstein.png";
 	FrankData = {};
 	FrankData.x = 750;
-	FrankData.y = 335;
+	FrankData.y = 300;
 	FrankData.width= 250;
 	FrankData.height=450;
 }
