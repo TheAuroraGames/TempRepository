@@ -29,12 +29,12 @@ var mouseY;
 var handVisible = false;
 var handX = 0;
 var handY = 0;
-var handWidth = 131;
-var handHeight = 75;
+var handWidth = 52;
+var handHeight = 30;
 
 
 createBackground();
-//createHand();
+createHand();
 
 
 function loadNextLevel(){
@@ -55,16 +55,16 @@ function createHand(){
 	hand.src = "../img/Hand.png";
 }
 
-function update()
-{
-	render();
-	//draw();
-}
-
 uInt = setInterval(update,33.34);
 
 canvas.addEventListener("mousemove", checkPos);
 canvas.addEventListener("mouseup", checkClick);
+
+function update()
+{
+	render();
+	draw();
+}
 
 function render()
 {
@@ -76,15 +76,14 @@ function render()
 	surface.drawImage(settings, buttonX[2], buttonY[2], buttonWidth[2], buttonHeight[2]);
 	surface.drawImage(exit, buttonX[3], buttonY[3], buttonWidth[3], buttonHeight[3]);
 	
-	
 }
 
-/*function draw(){
+function draw(){
 	if(handVisible == true){
 		surface.drawImage(hand, handX - (handWidth/2), handY, handWidth, handHeight);
 	}
 }
-*/
+
 function checkPos (mouseEvent){
 	if(mouseEvent.pageX || mouseEvent.pageY == 0){
 		mouseX = mouseEvent.pageX - this.offsetLeft;
@@ -93,13 +92,20 @@ function checkPos (mouseEvent){
 		mouseX = mouseEvent.offsetX;
 		mouseY = mouseEvent.offsetY;
 	}
+	if (mouseX > buttonX[0] && mouseX < buttonX[0] + buttonWidth[0] && mouseY > buttonY[0] && mouseY < buttonY[0] + buttonHeight[0]){
+		handVisible = true;
+		handX = buttonX[0] -(handWidth/2) - 100;
+		handY = buttonY[0] + 100;
+	}
+	else{
+		handVisible = false;
+	}
+
 	/*for (i = 0; i < buttonX.length; i++){
-		if(mouseX > buttonX[i] && mouseX < buttonX[i] + buttonWidth[i]){
-			if(mouseY > buttonY[i] && mouseY < buttonY[i] + buttonWidth[i]){
+		if(mouseX > buttonX[i] && mouseX < buttonX[i] + buttonWidth[i] && mouseY > buttonY[i] && mouseY < buttonY[i] + buttonWidth[i]){
 				handVisible = true;
 				handX = buttonX[i] - (handWidth/2) - 2;
 				handY = buttonY[i] + 2;
-			}
 		}else{
 			handVisible = false;
 		}
