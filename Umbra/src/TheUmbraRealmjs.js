@@ -53,15 +53,21 @@ var RobinWalk;
 var RobinJump;
 var RobinPunch;
 var VampBack;
+var VampPunch;
 var Nosey;
 var Robin;
 var VampDeath;
 
+var MoveTimer = 0;
 var Uptime = Date.now();
 
 
 
 var uInt;
+
+var AiTimer = setInterval(function (){
+	MoveTimer++;
+}, 500);
 
 
 
@@ -76,7 +82,7 @@ var upPressed = false;
 var punchPressed = false;
 //var downPressed = false;
 
-
+var VampPunchState = false;
 var vampDying = false; 
 var vampDead = false;
 var isJumping = false;
@@ -84,6 +90,7 @@ var RobinJumpData;
 var RobinAnimData;
 var RobinWalkData;
 var vampDeathData;
+var VampPunchData;
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
@@ -95,6 +102,7 @@ createRobinPunch();
 createRobinJump();
 createRobinWalk();
 createVampdeath();
+createVampPunch();
 
 
 function loadNextLevel()
@@ -104,19 +112,30 @@ function loadNextLevel()
 
 
 //Checking collision function the parameters of this function are given input in the update function.
-function checkCollision(player1animdata,player1data,player2data,targetframe)
+function checkCollision(player1animdata,player1data,player2data,targetframe,isRight=true)
 {	
 //if the punching animation reaches the target frame 1 part of the collision is achieved.
 	if(Math.floor(player1animdata.currentFrame)== targetframe){
 	
+		var player1Edge ;
 		//checks whats the players right edge is.
-		var player1Edge = player1data.x + player1data.width;
-		
-		// this checks if players right edge hits the enemy.
+		if (isRight==true){player1Edge = player1data.x + player1data.width; 
+		// this checks if players  edge hits the enemy.
 		if (player1Edge>= player2data.x&& player1Edge<=(player2data.x + player2data.width)){
 			
 			return true;
 		}
+		}
+		else {
+			player1Edge = player1data.x; 
+			
+		// this checks if players  edge hits the enemy.
+		if (player1Edge>= player2data.x&& player1Edge<=(player2data.x + player2data.width)){
+			
+			return true;
+		}
+		}
+		
 		return false;
 		
 	}
@@ -135,6 +154,18 @@ function update()
 	if (typeof dt == 'undefined') dt=1;
 	
 	Uptime = now;
+	if (VampPunchState){
+		console.log("hi");
+		VampPunchState= ! Animate(VampPunchData,dt);
+		if(checkCollision(VampPunchData,NoseData,PlayerData,7,false))
+		{
+			health --;
+			percent = health/maxhealth;
+			if(percent <= 0){
+				percent = 0;
+			}
+		}
+	}
 	
 // if we are in jumping state then it will animation the jumping.
 	if (isJumping)
@@ -172,6 +203,7 @@ function update()
 	}
 	moverobin(dt);
 	moveNoseAI(dt);
+	VampAction(dt);
 	render();
 	
 	
@@ -266,6 +298,25 @@ function createHero()
 	
 }
 
+function createVampPunch()
+{
+	VampPunch = new Image();
+	VampPunch.src = "../img/VampireSprite.png";
+	VampPunchData ={
+	row:3,
+	col:3,
+	MaxFrame:8,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping: false,
+	VampPunchSound: new Audio()
+	};
+	VampPunchData.VampPunchSound.src="../audio/punch.wav";
+}
+
 function createNose()
 {
 	Nosey = new Image();
@@ -276,6 +327,20 @@ function createNose()
 	NoseData.width= 250;
 	NoseData.height=450;
 	
+}
+
+function VampAction(deltaTime)
+{
+	if (MoveTimer == 3 && VampPunchState == false)
+	{
+		VampPunchState = true;
+		MoveTimer = 0;
+	}
+	//else if(MoveTimer == 5 && Vam)
+	//{
+		
+	//}
+		
 }
 
 function moveNoseAI(deltaTime)
@@ -295,7 +360,7 @@ function moveNoseAI(deltaTime)
 	
 	if (NoseData.x==NaN) NoseData.x = 750;
 	
-	console.log(NoseData.x + "" + deltaTime);
+	
 }
 
 function createVampdeath()
@@ -411,6 +476,10 @@ function render()
 		if(vampDying)
 		{
 			surface.drawImage(vampDeath, vampDeathData.x, vampDeathData.y, 512,512, NoseData.x, NoseData.y, NoseData.width, NoseData.height);
+		}
+		else if(VampPunchState == true)
+		{
+			surface.drawImage(VampPunch,VampPunchData.x,VampPunchData.y,512,512,NoseData.x,NoseData.y,NoseData.width, NoseData.height);
 		}
 		else
 		{
