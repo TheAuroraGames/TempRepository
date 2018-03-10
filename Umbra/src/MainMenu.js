@@ -92,24 +92,26 @@ function checkPos (mouseEvent){
 		mouseX = mouseEvent.offsetX;
 		mouseY = mouseEvent.offsetY;
 	}
-	if (mouseX > buttonX[0] && mouseX < buttonX[0] + buttonWidth[0] && mouseY > buttonY[0] && mouseY < buttonY[0] + buttonHeight[0]){
+	/*if (mouseX > buttonX[0] && mouseX < buttonX[0] + buttonWidth[0] && mouseY > buttonY[0] && mouseY < buttonY[0] + buttonHeight[0]){
 		handVisible = true;
 		handX = buttonX[0] -(handWidth/2) - 100;
 		handY = buttonY[0] + 100;
 	}
 	else{
 		handVisible = false;
-	}
+	}*/
 
-	/*for (i = 0; i < buttonX.length; i++){
-		if(mouseX > buttonX[i] && mouseX < buttonX[i] + buttonWidth[i] && mouseY > buttonY[i] && mouseY < buttonY[i] + buttonWidth[i]){
+	for (i = 0; i < buttonX.length; i++){
+		if(mouseX > buttonX[i] && mouseX < buttonX[i] + buttonWidth[i]){
+			if(mouseY > buttonY[i] && mouseY < buttonY[i] + buttonWidth[i]){
 				handVisible = true;
 				handX = buttonX[i] - (handWidth/2) - 2;
 				handY = buttonY[i] + 2;
+			}
 		}else{
 			handVisible = false;
 		}
-	}*/
+	}
 }
 
 
