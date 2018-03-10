@@ -49,7 +49,7 @@ function render()
 {
 		surface.clearRect(0,0,canvas.width,canvas.height);
 		surface.drawImage(characterBackground,0,0,1024,768);//background image
-		surface.font = "50px Arial";
+		surface.font = "50px Garamond";
 		surface.fillText("Select Your Gender",300,90);
 		surface.fillStyle = "red";
 		
