@@ -163,8 +163,12 @@ function update()
 	
 	if (typeof dt == 'undefined') dt=1;
 	
-	Uptime = now;
-	if (VampPunchState){
+	Uptime = now;	
+	if(vampDying&&vampDead==false)
+	{
+		vampDead= Animate(vampDeathData,dt);
+		
+	}else if (VampPunchState&&vampDead==false){
 		VampPunchState= ! Animate(VampPunchData,dt);
 		if(checkCollision(VampPunchData,NoseData,PlayerData,7,false))
 		{
@@ -211,11 +215,7 @@ function update()
 				
 		}
 	}
-	if(vampDying&&vampDead==false)
-	{
-		vampDead= Animate(vampDeathData,dt);
-		
-	}
+
 
 //if the left or right button is pressed then the walking animation is pressed.
 	if(leftPressed || rightPressed)
