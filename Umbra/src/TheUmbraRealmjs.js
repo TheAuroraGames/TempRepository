@@ -115,10 +115,10 @@ function loadNextLevel()
 	window.location.href = 'level2.html';
 }
 
-/*function GameOver()
+function GameOver()
 {
-	window.location.href = '';//Insert GameOver html and js.
-}*/
+	window.location.href = 'GameOver.html';
+}
 
 
 //Checking collision function the parameters of this function are given input in the update function.
@@ -185,7 +185,7 @@ function update()
 	}
 	if(RobinDead == true)
 	{
-		console.log("hi");
+		GameOver();
 	}
 	
 // if we are in jumping state then it will animation the jumping.
