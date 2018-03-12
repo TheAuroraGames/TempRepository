@@ -57,6 +57,7 @@ var VampPunch;
 var Nosey;
 var Robin;
 var VampDeath;
+var RobinDeath;
 
 var MoveTimer = 0;
 var Uptime = Date.now();
@@ -82,6 +83,8 @@ var upPressed = false;
 var punchPressed = false;
 //var downPressed = false;
 
+var RobinDying = false;
+var RobinDead = false;
 var VampPunchState = false;
 var vampDying = false; 
 var vampDead = false;
@@ -89,6 +92,7 @@ var isJumping = false;
 var RobinJumpData;
 var RobinAnimData;
 var RobinWalkData;
+var RobinDeathData;
 var vampDeathData;
 var VampPunchData;
 //Keyboard Listeners
@@ -103,12 +107,18 @@ createRobinJump();
 createRobinWalk();
 createVampdeath();
 createVampPunch();
+createRobinDeath();
 
 
 function loadNextLevel()
 {
 	window.location.href = 'level2.html';
 }
+
+/*function GameOver()
+{
+	window.location.href = '';//Insert GameOver html and js.
+}*/
 
 
 //Checking collision function the parameters of this function are given input in the update function.
@@ -155,16 +165,27 @@ function update()
 	
 	Uptime = now;
 	if (VampPunchState){
-		console.log("hi");
 		VampPunchState= ! Animate(VampPunchData,dt);
 		if(checkCollision(VampPunchData,NoseData,PlayerData,7,false))
 		{
 			health --;
 			percent = health/maxhealth;
 			if(percent <= 0){
+				RobinDying = true;
+				
+				
 				percent = 0;
 			}
 		}
+	}
+	if(RobinDying&&RobinDead==false)
+	{
+		RobinDead= Animate(RobinDeathData,dt);
+		
+	}
+	if(RobinDead == true)
+	{
+		console.log("hi");
 	}
 	
 // if we are in jumping state then it will animation the jumping.
@@ -277,6 +298,28 @@ function createRobinPunch()
 	
 	RobinAnimData.PunchSound.src = "../audio/punch.wav";
 }
+function createRobinDeath()
+{
+	RobinDeath = new Image();
+	RobinDeath.src = "../img/Robin_Death.png";
+	RobinDeathData = {
+	row :3,
+	col :3,
+	MaxFrame :8,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping: false,
+	// Audio is played every time the player jumps
+	// DeadSound: new Audio()
+	};
+	
+// add sound
+	
+}
+
 
 function createBackground()
 {
@@ -454,7 +497,12 @@ function render()
 	surface.fillStyle= "green";
 	surface.fillRect(noseHP.x, noseHP.y, noseHP.width * Nosepercent, noseHP.height);
 	//if the punch button is pressed draws the punching animation.
-	if(punchPressed){
+	if (RobinDead == false){
+	if(RobinDying)
+	{
+		surface.drawImage(RobinDeath,RobinDeathData.x, RobinDeathData.y,512,512, PlayerData.x, PlayerData.y,PlayerData.width,PlayerData.height);
+	}
+	else if(punchPressed){
 		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	// if in jumping state and punching isnt pressed draws the jumping animation.
 	}else if(isJumping){
@@ -470,7 +518,9 @@ function render()
 	
 	else{
 		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	}
 	}	
+	
 	if (vampDead == false)
 	{
 		if(vampDying)
