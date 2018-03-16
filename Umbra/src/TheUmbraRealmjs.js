@@ -58,6 +58,7 @@ var Nosey;
 var Robin;
 var VampDeath;
 var RobinDeath;
+var VampJump;
 
 var MoveTimer = 0;
 var Uptime = Date.now();
@@ -75,6 +76,7 @@ var AiTimer = setInterval(function (){
 
 
 // Speed
+var VampJumpSpeed = 50;
 var RobinSpeed = 15	;
 
 var leftPressed = false;
@@ -85,9 +87,11 @@ var punchPressed = false;
 
 var RobinDying = false;
 var RobinDead = false;
+var VampJumpState = false;
 var VampPunchState = false;
 var vampDying = false; 
 var vampDead = false;
+var VampisJumping = false;
 var isJumping = false;
 var RobinJumpData;
 var RobinAnimData;
@@ -95,6 +99,7 @@ var RobinWalkData;
 var RobinDeathData;
 var vampDeathData;
 var VampPunchData;
+var VampJumpData;
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
@@ -107,6 +112,7 @@ createRobinJump();
 createRobinWalk();
 createVampdeath();
 createVampPunch();
+createVampJump();
 createRobinDeath();
 
 
@@ -168,7 +174,8 @@ function update()
 	{
 		vampDead= Animate(vampDeathData,dt);
 		
-	}else if (VampPunchState&&vampDead==false){
+	}
+	else if (VampPunchState&&vampDead==false){
 		VampPunchState= ! Animate(VampPunchData,dt);
 		if(checkCollision(VampPunchData,NoseData,PlayerData,7,false))
 		{
@@ -176,12 +183,13 @@ function update()
 			percent = health/maxhealth;
 			if(percent <= 0){
 				RobinDying = true;
-				
-				
 				percent = 0;
 			}
 		}
+	}else if (VampJumpState&&vampDead==false){
+	VampJumpState= ! Animate(VampJumpData,dt);
 	}
+	
 	if(RobinDying&&RobinDead==false)
 	{
 		RobinDead= Animate(RobinDeathData,dt);
@@ -359,6 +367,26 @@ function createVampPunch()
 	};
 	VampPunchData.VampPunchSound.src="../audio/punch.wav";
 }
+function createVampJump()
+{
+	VampJump = new Image();
+	VampJump.src = "../img/Vampire_Jump.png";
+	VampJumpData={
+	row :3,
+	col :2,
+	MaxFrame :5,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping: true,
+	// Audio is played every time the player jumps
+	VampJumpSound: new Audio()
+	};
+	
+	VampJumpData.VampJumpSound.src = "../audio/jump.wav";
+}
 
 function createNose()
 {
@@ -369,26 +397,58 @@ function createNose()
 	NoseData.y = 335;
 	NoseData.width= 250;
 	NoseData.height=450;
+	NoseData.gravity = 0.05;
+	NoseData.gravitySpeed = 0.00;
 	
 }
 
 function VampAction(deltaTime)
 {
+if(vampDead||vampDying){
+	return;
+}
 	if (MoveTimer == 3 && VampPunchState == false)
 	{
 		VampPunchState = true;
-		MoveTimer = 0;
-	}
-	//else if(MoveTimer == 5 && Vam)
-	//{
+		VampPunchData.VampPunchSound.play();
 		
-	//}
+	
+	}
+	else if(MoveTimer == 6 && VampJumpState == false)
+	{
+		VampJumpState = true;
+		VampisJumping=true;
+		VampJumpData.VampJumpSound.play();
+	
+	}
+	
+	if (MoveTimer>6)MoveTimer=0; 
+	
+	
 		
 }
 
 function moveNoseAI(deltaTime)
 {
-	if (NoseData.x != PlayerData.x && NoseData.y != PlayerData.y){
+	if (VampJumpState){
+		if (VampisJumping == true)
+	{
+		// formula used for gravity.
+		NoseData.y -= (VampJumpSpeed + NoseData.gravity)*deltaTime;
+		//if Nosedata.y reaches 165 come back down.
+			if (NoseData.y < 165)
+			{
+				VampisJumping = false;
+			}
+	}
+	else
+	{
+		
+		//formula used for gravity.
+			NoseData.y += (VampJumpSpeed + NoseData.gravity)*deltaTime;
+	}
+	}
+	else if (NoseData.x != PlayerData.x && NoseData.y != PlayerData.y){
 		if (Math.floor(Math.random() * 2) == 1){
 			if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + (NoseSpeed*deltaTime);
 			else if  (NoseData.x > PlayerData.x) NoseData.x = NoseData.x - (NoseSpeed*deltaTime);
@@ -402,6 +462,12 @@ function moveNoseAI(deltaTime)
 	if (NoseData.x>800) NoseData.x= 800;
 	
 	if (NoseData.x==NaN) NoseData.x = 750;
+	if (NoseData.y<165) NoseData.y = 165;
+	if (NoseData.y>335) 
+	{
+		NoseData.y= 335;
+		VampJumpState = false;
+	}
 	
 	
 }
@@ -531,6 +597,10 @@ function render()
 		{
 			surface.drawImage(VampPunch,VampPunchData.x,VampPunchData.y,512,512,NoseData.x,NoseData.y,NoseData.width, NoseData.height);
 		}
+		else if(VampJumpState == true)
+		{
+			surface.drawImage(VampJump,VampJumpData.x,VampJumpData.y,512,512,NoseData.x,NoseData.y,NoseData.width,NoseData.height);
+		}
 		else
 		{
 			surface.drawImage(Nosey,NoseData.x,NoseData.y,NoseData.width,NoseData.height);
@@ -558,8 +628,9 @@ function Animate(objToAnimate,deltaTime)
 	}
 	else //dont loop
 	{
-		if (Math.floor(objToAnimate.currentFrame) >= objToAnimate.MaxFrame-1)
+		if (Math.floor(objToAnimate.currentFrame)>=objToAnimate.MaxFrame-1)
 		{
+			objToAnimate.currentFrame=0;
 			return true;
 		}	
 		else 
