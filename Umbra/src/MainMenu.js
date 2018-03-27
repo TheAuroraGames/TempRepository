@@ -121,11 +121,18 @@ function checkClick(mouseEvent){
 			canvas.removeEventListener("mousemove", checkPos);
 			canvas.removeEventListener("mouseup", checkClick);
 		}
+	else if (mouseX > 410 && mouseX < 489 && mouseY > 705 && mouseY < 736){ //this does not work for Firefox, only for Chrome
+			close();
+			canvas.removeEventListener("mousemove", checkPos);
+			canvas.removeEventListener("mouseup", checkClick);
+		}
 	else
 		{
 			loadMenu();
 		}
 	}	
+	
+
 
 
 	
