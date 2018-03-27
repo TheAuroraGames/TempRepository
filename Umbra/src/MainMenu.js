@@ -38,6 +38,10 @@ var handY = 0;
 var handWidth = 52;
 var handHeight = 30;
 
+var input = new CanvasInput({
+	canvas: document.getElementById('canvas');
+});
+
 createBackground();
 createHand();
 
