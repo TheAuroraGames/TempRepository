@@ -51,16 +51,25 @@ var RobinWalk;
 var RobinJump;
 var RobinPunch;
 var FrankBack;
+var FrankPunch;
 var Franky;
 var Robin;
 var FrankDeath;
+var RobinDeath;
+var FrankJump;
 
+var MoveTimer = 0;
 var Uptime = Date.now();
 
 
 
 var uInt;
 
+var AiTimer = setInterval(function (){
+	MoveTimer++;
+},1000);
+
+var FrankJumpSpeed = 40;
 var RobinSpeed = 15	;
 
 var leftPressed = false;
@@ -68,13 +77,21 @@ var rightPressed = false;
 var upPressed = false;
 var punchPressed = false;
 
+var RobinDying = false;
+var RobinDead = false;
 var FrankDying = false; 
 var FrankDead = false;
+var FrankJumpState = false;
+var FrankPunchState = false;
+var FrankisJumping = false;
 var isJumping = false;
 var RobinJumpData;
 var RobinAnimData;
 var RobinWalkData;
+var RobinDeathData;
 var FrankDeathData;
+var FrankPunchData;
+var FrankJumpData;
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
@@ -85,27 +102,46 @@ createBackground();
 createRobinPunch();
 createRobinJump();
 createRobinWalk();
+createRobinDeath();
 createFrankDeath();
+createFrankPunch();
+createFrankJump();
 
 function loadNextLevel()
 {
 	window.location.href = 'TheUmbraRealm.html';
 }
 
+function GameOver()
+{
+	window.location.href ='GameOver.html';
+}
+
 //Checking collision function the parameters of this function are given input in the update function.
-function checkCollision(player1animdata,player1data,player2data,targetframe)
+function checkCollision(player1animdata,player1data,player2data,targetframe,isRight=true)
 {	
 //if the punching animation reaches the target frame 1 part of the collision is achieved.
 	if(Math.floor(player1animdata.currentFrame)== targetframe){
-	
+		
+		var player1Edge;
 		//checks whats the players right edge is.
-		var player1Edge = player1data.x + player1data.width;
+		if(isRight==true){player1Edge = player1data.x + player1data.width;
 		
 		// this checks if players right edge hits the enemy.
 		if (player1Edge>= player2data.x&& player1Edge<=(player2data.x + player2data.width)){
 			
 			return true;
 		}
+		}
+		else {
+			player1Edge = player1data.x;
+		
+		if (player1Edge>= player2data.x&& player1Edge<=(player2data.x+ player2data.width)){
+			
+			return true;
+		}
+		}
+		
 		return false;
 		
 	}
@@ -124,6 +160,34 @@ function update()
 	if (typeof dt == 'undefined') dt=1;
 	
 	Uptime = now;
+	if(FrankDying&&FrankDead==false)
+	{
+		FrankDead= Animate (FrankDeathData,dt);
+		
+	}
+	else if(FrankPunchState&&FrankDead==false){
+		FrankPunchState= ! Animate(FrankPunchData,dt);
+		if(checkCollision(FrankPunchData,FrankData,PlayerData,3,false))
+		{
+			health --;
+			percent = health/maxhealth;
+			if(percent <= 0){
+				RobinDying = true;
+				percent = 0;
+			}
+		}
+	}else if (FrankJumpState&&FrankDead==false){
+	FrankJumpState= ! Animate(FrankJumpData,dt);
+	}
+	
+	if(RobinDying&&RobinDead==false)
+	{
+		RobinDead= Animate(RobinDeathData,dt);
+	}
+	if(RobinDead == true)
+	{
+		GameOver();
+	}
 	
 // if we are in jumping state then it will animation the jumping.
 	if (isJumping)
@@ -148,11 +212,6 @@ function update()
 				
 		}
 	}
-	if(FrankDying&&FrankDead==false)
-	{
-		FrankDead= Animate(FrankDeathData,dt);
-		
-	}
 
 //if the left or right button is pressed then the walking animation is pressed.
 	if(leftPressed || rightPressed)
@@ -161,6 +220,7 @@ function update()
 	}
 	moverobin(dt);
 	moveFrankAI(dt);
+	FrankAction(dt);
 	render();
 	
 	
@@ -235,6 +295,25 @@ function createRobinPunch()
 	RobinAnimData.PunchSound.src = "../audio/punch.wav";
 }
 
+function createRobinDeath()
+{
+	RobinDeath = new Image();
+	RobinDeath.src = "../img/Robin_Death.png";
+	RobinDeathData = {
+	row:3,
+	col:3,
+	MaxFrame:8,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping: false,
+	//DeadSound:new Audio()
+	};
+	//add sound
+}
+
 function createBackground()
 {
 	FrankBack = new Image();
@@ -255,6 +334,42 @@ function createHero()
 	PlayerData.gravitySpeed = 0.00;
 	
 }
+function createFrankPunch()
+{
+	FrankPunch = new Image();
+	FrankPunch.src ="../img/Zombie_Punch.png";
+	FrankPunchData ={
+	row :2,
+	col :2,
+	MaxFrame :4,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping: false,
+	FrankPunchSound: new Audio()
+	};
+	FrankPunchData.FrankPunchSound.src="../audio/punch.wav";
+}
+function createFrankJump()
+{
+	FrankJump = new Image();
+	FrankJump.src = "../img/Zombie_Jump.png";
+	FrankJumpData={
+	row:3,
+	col:3,
+	MaxFrame:7,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping:true,
+	FrankJumpSound: new Audio()
+	};
+	FrankJumpData.FrankJumpSound.src = "../audio/jump.wav";
+}
 
 function createFrank()
 {
@@ -265,11 +380,50 @@ function createFrank()
 	FrankData.y = 300;
 	FrankData.width= 250;
 	FrankData.height=450;
+	FrankData.gravity = 0.05;
+	FrankData.gravitySpeed = 0.00;
+}
+
+function FrankAction(deltaTime)
+{
+if(FrankDead||FrankDying){
+	return;
+}
+	if (MoveTimer == 4 && FrankPunchState == false)
+	{
+		FrankPunchState = true;
+		FrankPunchData.FrankPunchSound.play();
+		
+		
+	}
+	else if (MoveTimer == 8 && FrankJumpState == false)
+	{
+		FrankJumpState = true;
+		FrankisJumping = true;
+		FrankJumpData.FrankJumpSound.play();
+		
+	}
+	
+	if (MoveTimer>8)MoveTimer=0;
 }
 
 function moveFrankAI(deltaTime)
 {
-	if (FrankData.x != PlayerData.x && FrankData.y != PlayerData.y){
+	if(FrankJumpState){
+		if(FrankisJumping == true)
+	{
+		FrankData.y -= (FrankJumpSpeed + FrankData.gravity)*deltaTime;
+			if(FrankData.y <165)
+			{
+				FrankisJumping = false;
+			}
+	}
+	else
+	{
+		FrankData.y += (FrankJumpSpeed + FrankData.gravity)*deltaTime;
+	}
+	}
+	else if (FrankData.x != PlayerData.x && FrankData.y != PlayerData.y){
 		if (Math.floor(Math.random() * 2) == 1){
 			if (FrankData.x < PlayerData.x) FrankData.x = FrankData.x + (FrankSpeed*deltaTime);
 			else if  (FrankData.x > PlayerData.x) FrankData.x = FrankData.x - (FrankSpeed*deltaTime);
@@ -283,6 +437,12 @@ function moveFrankAI(deltaTime)
 	if (FrankData.x>800) FrankData.x= 800;
 	
 	if (FrankData.x==NaN) FrankData.x = 750;
+	if (FrankData.y<165) FrankData.y = 165;
+	if(FrankData.y>300)
+	{
+		FrankData.y= 300;
+		FrankJumpState = false;
+	}
 	
 	
 }
@@ -371,7 +531,13 @@ function render()
 	surface.fillStyle= "green";
 	surface.fillRect(FrankHP.x, FrankHP.y, FrankHP.width * FrankPercent, FrankHP.height);
 	//if the punch button is pressed draws the punching animation.
-	if(punchPressed){
+	if (RobinDead == false){
+	if(RobinDying)
+	{
+		surface.drawImage(RobinDeath,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	}
+	
+	else if(punchPressed){
 		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
 	// if in jumping state and punching isnt pressed draws the jumping animation.
 	}else if(isJumping){
@@ -387,12 +553,21 @@ function render()
 	
 	else{
 		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	}
 	}	
 	if (FrankDead == false)
 	{
 		if(FrankDying)
 		{
 			surface.drawImage(FrankDeath, FrankDeathData.x, FrankDeathData.y, 512,512, FrankData.x, FrankData.y, FrankData.width, FrankData.height);
+		}
+		else if(FrankPunchState == true)
+		{
+			surface.drawImage(FrankPunch,FrankPunchData.x,FrankPunchData.y,512,512,FrankData.x,FrankData.y,FrankData.width,FrankData.height);
+		}
+		else if(FrankJumpState == true)
+		{
+			surface.drawImage(FrankJump,FrankJumpData.x,FrankJumpData.y,512,512,FrankData.x,FrankData.y,FrankData.width,FrankData.height);
 		}
 		else
 		{
@@ -423,6 +598,7 @@ function Animate(objToAnimate,deltaTime)
 	{
 		if (Math.floor(objToAnimate.currentFrame) >= objToAnimate.MaxFrame-1)
 		{
+			objToAnimate.currentFrame = 0;
 			return true;
 		}	
 		else 
