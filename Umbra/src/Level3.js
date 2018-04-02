@@ -167,7 +167,7 @@ function update()
 	}
 	else if(FrankPunchState&&FrankDead==false){
 		FrankPunchState= ! Animate(FrankPunchData,dt);
-		if(checkCollision(FrankPunchData,FrankData,PlayerData,22,false))
+		if(checkCollision(FrankPunchData,FrankData,PlayerData,29,false))
 		{
 			health --;
 			percent = health/maxhealth;
@@ -339,9 +339,9 @@ function createFrankPunch()
 	FrankPunch = new Image();
 	FrankPunch.src ="../img/Zombie_Punch.png";
 	FrankPunchData ={
-	row :5,
+	row :6,
 	col :5,
-	MaxFrame :23,
+	MaxFrame :30,
 	x:0,
 	y:0,
 	width:512,
