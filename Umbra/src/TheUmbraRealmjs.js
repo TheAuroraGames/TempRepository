@@ -666,7 +666,7 @@ function onKeyDown(event)
 			punchPressed =true;
 			RobinAnimData.PunchSound.play();
 			break;
-		case 32:
+		case 32://SpaceBar
 		if(vampDead == true)
 			loadNextLevel();
 			break;

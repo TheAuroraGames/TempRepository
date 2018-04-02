@@ -167,7 +167,7 @@ function update()
 	}
 	else if(BossPunchState&&BossDead==false){
 		BossPunchState= ! Animate(BossPunchData,dt);
-		if(checkCollision(BossPunchData,BossData,PlayerData,7,false))
+		if(checkCollision(BossPunchData,BossData,PlayerData,6,false))
 		{
 			health --;
 			percent = health/maxhealth;
