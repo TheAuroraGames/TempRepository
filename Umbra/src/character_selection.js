@@ -30,7 +30,7 @@ function createBackground()
 }
 
 function loadNextLevel(){
-	window.location.href = 'TheUmbraRealm.html';
+	window.location.href = 'Segment1.html';
 }
 function loadMenu(){
 	window.location.href = 'character_selection.html';
