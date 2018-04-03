@@ -89,7 +89,7 @@ createClownDeath();
 
 function loadNextLevel()
 {
-	window.location.href = 'level3.html';
+	window.location.href = 'Segment5.html';
 }
 
 //Checking collision function the parameters of this function are given input in the update function.
