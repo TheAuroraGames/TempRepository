@@ -18,7 +18,7 @@ var TextBar = {
 };
 
 var script=[
-	{speaker:"Hero",line:"It was a dark and stormy night and it was movie night,"},{speaker:"Hero",line:"Specifically, horror movie night."},{speaker:"Hero",line:"You hate horror movies but,"},{speaker:"Hero",line:"Your family loves them."},{speaker:"Hero",line:"So, your obligated to watch a marathon of horror movies."},{speaker:"Hero",line:"As you watch these movies you start feeling very drowsy and start to doze off...."}
+	{speaker:"Hero",line:"Damn that hunk of metal was tough."},{speaker:"Hero",line:"Or was it a zombie?"},{speaker:"Hero",line:"Hmm I wonder if this guy has a clue on him."},{speaker:"Hero",line:"Interesting I found one of those rectangle things."},{speaker:"Hero",line:"What were they called again?"},{speaker:"Hero",line:"VHS? It says Home Alone."},{speaker:"Hero",line:"Why on earth would he have Home Alone on Him."},{speaker:"Hero",line:"Well I better keep moving since there is nothing left for me here."}
 ];
 var scriptIndex=0;
 
@@ -38,7 +38,7 @@ createBackground();
 
 function LoadNextLevel()
 {
-	window.location.href = 'Segment2.html';
+	window.location.href = 'Segment8.html';
 }
 
 function update()
@@ -51,7 +51,7 @@ UInt = setInterval(update,33.34);
 function createBackground()
 {
 	TextBack = new Image ();
-	TextBack.src = '../img/vampire background.png';
+	TextBack.src = '../img/laboratory.png';
 }
 
 function render()

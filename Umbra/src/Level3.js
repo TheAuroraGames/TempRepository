@@ -109,7 +109,7 @@ createFrankJump();
 
 function loadNextLevel()
 {
-	window.location.href = 'TheUmbraRealm.html';
+	window.location.href = 'Segment7.html';
 }
 
 function GameOver()
