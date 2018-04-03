@@ -18,7 +18,7 @@ var TextBar = {
 };
 
 var script=[
-	{speaker:"Hero",line:"It was a dark and stormy night and it was movie night,"},{speaker:"Hero",line:"Specifically, horror movie night."},{speaker:"Hero",line:"You hate horror movies but,"},{speaker:"Hero",line:"Your family loves them."},{speaker:"Hero",line:"So, your obligated to watch a marathon of horror movies."},{speaker:"Hero",line:"As you watch these movies you start feeling very drowsy and start to doze off...."}
+	{speaker:"Hero",line:"Huh? Where am I?"},{speaker:"Hero",line:"Why does this place look so familiar?"},{speaker:"Hero",line:"I must be dreaming."},{speaker:"Hero",line:"(Proceeds to pinch themselves) Ouch! Looks like I'm not dreaming..."},{speaker:"Hero",line:"Wait is that the Vampire from that movie?"},{speaker:"Hero",line:"What was it called again?"},{speaker:"Hero",line:"Nosefearatu yah I think that's what it was called."},{speaker:"Hero",line:"Wait I think he is coming this way. Ahhhh!!!"}
 ];
 var scriptIndex=0;
 
@@ -38,7 +38,7 @@ createBackground();
 
 function LoadNextLevel()
 {
-	window.location.href = 'Segment2.html';
+	window.location.href = 'TheUmbraRealm.html';
 }
 
 function update()

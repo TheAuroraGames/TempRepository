@@ -118,7 +118,7 @@ createRobinDeath();
 
 function loadNextLevel()
 {
-	window.location.href = 'level2.html';
+	window.location.href = 'Segment3.html';
 }
 
 function GameOver()

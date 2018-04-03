@@ -18,7 +18,7 @@ var TextBar = {
 };
 
 var script=[
-	{speaker:"Hero",line:"It was a dark and stormy night and it was movie night,"},{speaker:"Hero",line:"Specifically, horror movie night."},{speaker:"Hero",line:"You hate horror movies but,"},{speaker:"Hero",line:"Your family loves them."},{speaker:"Hero",line:"So, your obligated to watch a marathon of horror movies."},{speaker:"Hero",line:"As you watch these movies you start feeling very drowsy and start to doze off...."}
+	{speaker:"Hero",line:"Man my feet are killing me I just wanna sit on my couch and watch tv."},{speaker:"Hero",line:"Wait this looks familiar."},{speaker:"Hero",line:"This looks just like home."},{speaker:"Hero",line:"Wait this is home."},{speaker:"Hero",line:"Woohoo I made it!!!"},{speaker:"Kevin",line:"'Welcome home Bro.'"},{speaker:"Hero",line:"Hmmm? KEVIN!! Wait something seems wrong with you."},{speaker:"Kevin",line:"'That's right this was all done by me. Big Boss Kevin.'"},{speaker:"Hero",line:"Wait... how does Home Alone fit into this?"},{speaker:"Kevin",line:"'Umm Duh Kevin.'"},{speaker:"Hero",line:"Oh yah you right. So can we like go back home?"},{speaker:"Kevin",line:"'Nope you gotta defeat me to go back.'"},{speaker:"Hero",line:"Well I always wanted to fight you anyways."}
 ];
 var scriptIndex=0;
 
@@ -38,7 +38,7 @@ createBackground();
 
 function LoadNextLevel()
 {
-	window.location.href = 'Segment2.html';
+	window.location.href = 'level4.html';
 }
 
 function update()
@@ -51,7 +51,7 @@ UInt = setInterval(update,33.34);
 function createBackground()
 {
 	TextBack = new Image ();
-	TextBack.src = '../img/vampire background.png';
+	TextBack.src = '../img/laboratory.png';
 }
 
 function render()

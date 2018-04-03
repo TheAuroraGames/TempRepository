@@ -18,7 +18,7 @@ var TextBar = {
 };
 
 var script=[
-	{speaker:"Hero",line:"It was a dark and stormy night and it was movie night,"},{speaker:"Hero",line:"Specifically, horror movie night."},{speaker:"Hero",line:"You hate horror movies but,"},{speaker:"Hero",line:"Your family loves them."},{speaker:"Hero",line:"So, your obligated to watch a marathon of horror movies."},{speaker:"Hero",line:"As you watch these movies you start feeling very drowsy and start to doze off...."}
+	{speaker:"Hero",line:"Hmm?"},{speaker:"Hero",line:"What happened?"},{speaker:"Hero",line:"I'm back in the living room."},{speaker:"Hero",line:"Did I win? I think I did there is no ominous feeling in the air anymore."},{speaker:"Hero",line:"I wonder if anyone is home?"},{speaker:"Hero",line:"Hey mom?"},{speaker:"Mother",line:"Yes dear?"},{speaker:"Hero",line:"is my brother ok?"},{speaker:"Mother",line:"Brother? What do you mean you're an only child."},{speaker:"DUN",line:"DUN DUN DUN!!!!!"}
 ];
 var scriptIndex=0;
 
@@ -38,7 +38,7 @@ createBackground();
 
 function LoadNextLevel()
 {
-	window.location.href = 'Segment2.html';
+	window.location.href = 'MainMenu.html';
 }
 
 function update()
@@ -51,7 +51,7 @@ UInt = setInterval(update,33.34);
 function createBackground()
 {
 	TextBack = new Image ();
-	TextBack.src = '../img/vampire background.png';
+	TextBack.src = '../img/laboratory.png';
 }
 
 function render()

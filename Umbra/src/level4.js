@@ -109,7 +109,7 @@ createBossJump();
 
 function loadNextLevel()
 {
-	window.location.href = 'TheUmbraRealm.html';
+	window.location.href = 'Segment9.html';
 }
 
 function GameOver()

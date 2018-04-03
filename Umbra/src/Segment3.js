@@ -18,7 +18,7 @@ var TextBar = {
 };
 
 var script=[
-	{speaker:"Hero",line:"It was a dark and stormy night and it was movie night,"},{speaker:"Hero",line:"Specifically, horror movie night."},{speaker:"Hero",line:"You hate horror movies but,"},{speaker:"Hero",line:"Your family loves them."},{speaker:"Hero",line:"So, your obligated to watch a marathon of horror movies."},{speaker:"Hero",line:"As you watch these movies you start feeling very drowsy and start to doze off...."}
+	{speaker:"Hero",line:"OMG. I just killed a vampire."},{speaker:"Hero",line:"Wait can a vampire be dead? (hmm is water wet?)"},{speaker:"Hero",line:"Hmm?"},{speaker:"Hero",line:"He was holding something."},{speaker:"Hero",line:"It was a piece of paper."},{speaker:"Hero",line:"It said 'Big' hmmm why would a vampire carry a piece of paper?"},{speaker:"Hero",line:"Eh"},{speaker:"Hero",line:"Doesn't matter I just got to get out of here."}
 ];
 var scriptIndex=0;
 
@@ -38,7 +38,7 @@ createBackground();
 
 function LoadNextLevel()
 {
-	window.location.href = 'Segment2.html';
+	window.location.href = 'Segment4.html';
 }
 
 function update()
