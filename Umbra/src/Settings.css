@@ -1,6 +1,35 @@
 body
 {
-	background-color: black;
-	text-align: center;
-	
+	background-color: black;	
 }
+
+h1
+{
+	color: white;
+	text-align: center;
+}
+
+h2
+{
+	color:white;
+	text-align:center;
+}
+
+h3
+{
+	color:white;
+	text-align:center;
+}
+
+h4
+{
+	color:white;
+	text-align:center;
+}
+
+#input
+{
+	color:white;
+	text-align:center;
+}
+	

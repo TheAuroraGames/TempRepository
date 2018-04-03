@@ -2,9 +2,24 @@
 	<head>
 		<title> Settings </title>
 		<meta charset ="utf-8">
-		<link rel ="stylesheet" href="MainMenu.css">
+		<link rel ="stylesheet" href="Settings.css">
 	</head>
 	<body>
+		<h1> Settings </h1>
+		<h2> Background Music Volume </h2>
+		<div id="input">
+		<input id="background" type="range" min="0" max="100" step="1"></input>
+		</div>
+		<h3> Effect Volume </h3>
+		<div id="input">
+		<input id="effect" type="range" min="0" max="100" step="1"></input>
+		</div>
+		<h4> Select Language </h4>
+		<div id="input">
+		<input type="radio" name="language" id="english">English<br>
+		<input type="radio" name="language" id="spanish">Spanish<br>
+		<button onclick="setLanguage()">Click to set language after selecting a language.</button>
+		</div>
 	</body>
 	<script src="Settings.js"></script>
 </html>

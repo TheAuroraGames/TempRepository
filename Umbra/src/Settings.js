@@ -1,60 +1,24 @@
-var mouseX;
-var mouseY;
+var backgroundMusic = document.getElementById("background");
+var soundEffects = document.getElementById("effect");
 
-var volumeslider;
-var soundClip;
-
-var timer = 0;
-
-var uInt = setInterval(update, 33.34);
-
-TestAudio();
-//setVolume();
-
-
-function TestAudio(){
-	soundClip={
-	audio: new Audio()
-	};
-	soundClip.audio.src = "https://www.youtube.com/watch?v=vabnZ9-ex7o";
-	
+backgroundMusic.oninput = function(){
+	//some global variable for background music = this.value;
 }
 
-/*function setVolume(){
-	volumeslider = document.getElementById("volumeslider");
-	
-	volumeslider.addEventListener("mousemove", setVolume);
-	
-		audio.volume = volumeslider.value / 100;
+soundEffects.oninput = function(){
+	//some global variable for sound effects = this.value;
+}
+
+function setLanguage(){
+	if (document.getElementById("english").checked == true){
+		//set language to english
 	}
-*/
-window.addEventListener("load", TestAudio);
-
-var audioTimer = setInterval(function (){
-	timer++;
-}, 500);
-
-function playAudio(){
-	if (timer == 3){
-		console.log("hi");
-		soundClip.audio.play();
+	
+	else if (document.getElementById("spanish").checked == true){
+		//set language to spanish
 	}
 }
-
-function update(){
-	
-}
-
-playAudio();
-
-
-
-	
-	
-	
-	
-	
-	
+		
 	
 	
 	
