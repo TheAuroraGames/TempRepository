@@ -52,6 +52,10 @@ function loadMenu(){
 	window.location.href = 'MainMenu.html';
 }
 
+function loadSettings(){
+	window.location.href = 'Settings.html'
+}
+
 //function that creates the background
 function createBackground()
 {
@@ -127,6 +131,11 @@ function checkClick(mouseEvent){
 			canvas.removeEventListener("mousemove", checkPos);
 			canvas.removeEventListener("mouseup", checkClick);
 		}
+	else if (mouseX > 388 && mouseX < 515 && mouseY > 650 && mouseY < 696){
+			loadSettings();
+			canvas.removeEventListener("mousemove", checkPos);
+			canvas.removeEventListener("mouseup", checkClick);
+	}
 	else if (mouseX > 410 && mouseX < 489 && mouseY > 705 && mouseY < 736){ //this does not work for Firefox, only for Chrome
 			close();
 			canvas.removeEventListener("mousemove", checkPos);
