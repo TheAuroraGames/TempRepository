@@ -233,6 +233,7 @@ function createRobinWalk()
 {
 //this loads the spritesheet for walking
 	RobinWalk = new Image();
+	if(window.localStorage.getItem("gender")=="male"){
 	RobinWalk.src = "../img/main_walking.png";
 	RobinWalkData={
 //this sets the amount of rows and columns in the sprite sheet
@@ -250,12 +251,33 @@ function createRobinWalk()
 	currentFrame:0,
 	looping: true,
 	};
+	}
+	else{
+	RobinWalk.src = "../img/Main.Character(female) Walking.png";
+	RobinWalkData={
+//this sets the amount of rows and columns in the sprite sheet
+	row :4,
+	col :3,
+// this is the max number of frames in the sprite sheet.
+	MaxFrame :11,
+//this is the iniial x and y position of the first frame in the animation
+	x:0,
+	y:0,
+// this is the size of each frame.
+	width:512,
+	height:512,
+// this is for which frame we start on.
+	currentFrame:0,
+	looping: true,
+	};
+	}
 	
 }
 
 function createRobinJump()
 {
 	RobinJump = new Image();
+	if(window.localStorage.getItem("gender")=="male"){
 	RobinJump.src = "../img/main_jumping.png";
 	RobinJumpData={
 	row :4,
@@ -270,6 +292,23 @@ function createRobinJump()
 	// Audio is played every time the player jumps
 	JumpSound: new Audio()
 	};
+	}
+	else{
+	RobinJump.src = "../img/Main.Character(female) Jumping.png";
+	RobinJumpData={
+	row :4,
+	col :3,
+	MaxFrame :12,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping: true,
+	// Audio is played every time the player jumps
+	JumpSound: new Audio()
+	};
+	}
 	
 	RobinJumpData.JumpSound.src = "../audio/jump.wav";
 }
@@ -277,6 +316,7 @@ function createRobinJump()
 function createRobinPunch()
 {
 	RobinPunch = new Image();
+	if(window.localStorage.getItem("gender")=="male"){
 	RobinPunch.src = "../img/Main_punching.png";
 	RobinAnimData={
 	row :3,
@@ -291,6 +331,23 @@ function createRobinPunch()
 	// Audio is played every time the player punches
 	PunchSound: new Audio()
 	};
+	}
+	else{
+	RobinPunch.src = "../img/Main.Character(female).Punching.png";
+	RobinAnimData={
+	row :4,
+	col :4,
+	MaxFrame :13,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping: true,
+	// Audio is played every time the player punches
+	PunchSound: new Audio()
+	};
+	}
 	
 	RobinAnimData.PunchSound.src = "../audio/punch.wav";
 }
@@ -298,6 +355,7 @@ function createRobinPunch()
 function createRobinDeath()
 {
 	RobinDeath = new Image();
+	if(window.localStorage.getItem("gender")=="male"){
 	RobinDeath.src = "../img/Robin_Death.png";
 	RobinDeathData = {
 	row:3,
@@ -311,6 +369,21 @@ function createRobinDeath()
 	looping: false,
 	//DeadSound:new Audio()
 	};
+	}
+	else{
+	RobinDeath.src = "../img/Main.Character(female)Death.png";
+	RobinDeathData = {
+	row :5,
+	col :4,
+	MaxFrame :13,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping: false,
+	};
+	}
 	//add sound
 }
 
@@ -323,6 +396,7 @@ function createBackground()
 function createHero()
 {
 	Robin = new Image();
+	if(window.localStorage.getItem("gender")=="male"){
 	Robin.src = "../img/Main.character.png";
 	PlayerData = {};
 	PlayerData.x = 0;
@@ -332,7 +406,18 @@ function createHero()
 	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
-	
+	}
+	else{
+	Robin.src = "../img/Main.Character(female).png";
+	PlayerData = {};
+	PlayerData.x = 0;
+	PlayerData.y = 400;
+	PlayerData.width= 250;
+	PlayerData.height=350;
+	//gravity of the player.
+	PlayerData.gravity = 0.05;
+	PlayerData.gravitySpeed = 0.00;
+	}
 }
 function createFrankPunch()
 {

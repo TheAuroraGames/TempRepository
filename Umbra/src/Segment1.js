@@ -17,9 +17,16 @@ var TextBar = {
 	height:200
 };
 
-var script=[
+var scriptE=[
 	{speaker:"Hero",line:"It was a dark and stormy night and it was movie night,"},{speaker:"Hero",line:"Specifically, horror movie night."},{speaker:"Hero",line:"You hate horror movies but,"},{speaker:"Hero",line:"Your family loves them."},{speaker:"Hero",line:"So, your obligated to watch a marathon of horror movies."},{speaker:"Hero",line:"As you watch these movies you start feeling very drowsy and start to doze off...."}
 ];
+var script = scriptE;
+//if (window.localStorage.getItem("language") == "spanish"){
+	//script = scriptS;
+//}
+
+
+
 var scriptIndex=0;
 
 var surface = canvas.getContext("2d");

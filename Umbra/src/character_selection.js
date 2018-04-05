@@ -2,6 +2,8 @@ var canvas= document.querySelector("canvas");
 canvas.width = 1024;
 canvas.height = 1024;
 
+var localStorage = window.localStorage;
+
 var surface = canvas.getContext("2d");
 
 var uInt;
@@ -70,14 +72,17 @@ function checkPos (mouseEvent){
 	}
 }
 function checkClick(mouseEvent){
-	if (mouseX > -50 && mouseX < 462 && mouseY > 125 && mouseY < 635){
+	if (mouseX > 100 && mouseX < 300 && mouseY > 125 && mouseY < 635){
+			localStorage.setItem("gender", "male");
 			loadNextLevel();
 			canvas.removeEventListener("mousemove", checkPos);
 			canvas.removeEventListener("mouseup", checkClick);
 		}
-	else
-		{
-			loadMenu();
+	else if(mouseX > 700 && mouseX < 900 && mouseY > 125 && mouseY < 635){	
+			localStorage.setItem("gender", "female");
+			loadNextLevel();
+			canvas.removeEventListener("mousemove", checkPos);
+			canvas.removeEventListener("mouseup", checkClick);
 		}
 	}	
 
