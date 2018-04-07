@@ -17,9 +17,21 @@ var TextBar = {
 	height:200
 };
 
-var script=[
+var scriptE=[
 	{speaker:"Hero",line:"You know for a clown he wasn't very funny,"},{speaker:"Hero",line:"he was kind of a jerk like my brother,"},{speaker:"Hero",line:"I hate that guy."},{speaker:"Hero",line:"Wait, this dude has a tattoo on his hand."},{speaker:"Hero",line:"B-boss? What does this even mean...?"},{speaker:"Hero",line:"Why am I at the circus?"},{speaker:"Hero",line:"Eh"},{speaker:"Hero",line:"Why do feet smell without a nose?!"},{speaker:"Hero",line:"Too many questions so little time."},{speaker:"Hero",line:"I need to get out of this nightmare."}
 ];
+var script=scriptE;
+if (window.localStorage.getItem("language")== "spanish"){
+script=scriptS;
+}
+else 
+{
+	script=scriptE;
+}
+var scriptS=[
+
+{speaker:"Héroe",line:"Sabes, para ser un payaso no era nada divertido."},{speaker:"Héroe",line:"Era bastante inútil, como mi hermano."},{speaker:"Héroe",line:"Odio a ese tipo."},{speaker:"Héroe",line:"Espera, este tipo tiene un tatuaje en su mano."},{speaker:"Héroe",line:"¿J-jefe? ¿Qué significa?"},{speaker:"Héroe",line:"¿Por qué estoy en el circo?"},{speaker:"Héroe",line:"¿Por qué los pies huelen sin una nariz?"},{speaker:"Héroe",line:"Demasiadas preguntas en tan poco tiempo."},{speaker:"Héroe",line:": Necesito salir de esta pesadilla."}
+]
 var scriptIndex=0;
 
 var surface = canvas.getContext("2d");
@@ -63,7 +75,10 @@ function render()
 	surface.fillStyle = "black";
 	surface.fillRect(TextBar.x,TextBar.y,TextBar.width,TextBar.height);
 	surface.fillStyle = "white";
-	surface.fillText("Press A to Continue",700,680)
+	if (window.localStorage.getItem("language") == "spanish"){
+	surface.fillText("Presiona A para continuar", 650, 680)}
+	else {
+	surface.fillText("Press A to Continue",700,680)}
 	surface.fillText(script[scriptIndex].speaker,100,530);
 	surface.fillText(script[scriptIndex].line,100,580);
 	

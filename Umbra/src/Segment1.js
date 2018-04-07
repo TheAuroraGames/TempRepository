@@ -20,10 +20,19 @@ var TextBar = {
 var scriptE=[
 	{speaker:"Hero",line:"It was a dark and stormy night and it was movie night,"},{speaker:"Hero",line:"Specifically, horror movie night."},{speaker:"Hero",line:"You hate horror movies but,"},{speaker:"Hero",line:"Your family loves them."},{speaker:"Hero",line:"So, your obligated to watch a marathon of horror movies."},{speaker:"Hero",line:"As you watch these movies you start feeling very drowsy and start to doze off...."}
 ];
-var script = scriptE;
-//if (window.localStorage.getItem("language") == "spanish"){
-	//script = scriptS;
-//}
+var script=scriptE;
+if (window.localStorage.getItem("language")== "spanish"){
+script=scriptS;
+}
+else 
+{
+	script=scriptE;
+}
+var scriptS=[
+
+{speaker:"Héroe",line:"Era una noche oscura llena de tormentas y películas,"},{speaker:"Héroe",line:"Específicamente, una noche de películas de terror."},{speaker:"Héroe",line:"Uno odia las películas de terror pero,"},{speaker:"Héroe",line:"Tu familia las ama."},{speaker:"Héroe",line:"Así que estás obligado a ver un maratón de películas de terror."},{speaker:"Héroe",line:"Mientras ves películas, empiezas a sentirte un poco cansado y comienzas a dormirte..."}
+]
+
 
 
 
@@ -70,7 +79,10 @@ function render()
 	surface.fillStyle = "black";
 	surface.fillRect(TextBar.x,TextBar.y,TextBar.width,TextBar.height);
 	surface.fillStyle = "white";
-	surface.fillText("Press A to Continue",700,680)
+	if (window.localStorage.getItem("language") == "spanish"){
+	surface.fillText("Presiona A para continuar", 650, 680)}
+	else {
+	surface.fillText("Press A to Continue",700,680)}
 	surface.fillText(script[scriptIndex].speaker,100,530);
 	surface.fillText(script[scriptIndex].line,100,580);
 	

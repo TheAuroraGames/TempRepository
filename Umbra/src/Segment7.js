@@ -17,9 +17,25 @@ var TextBar = {
 	height:200
 };
 
-var script=[
+var scriptE=[
 	{speaker:"Hero",line:"Damn that hunk of metal was tough."},{speaker:"Hero",line:"Or was it a zombie?"},{speaker:"Hero",line:"Hmm I wonder if this guy has a clue on him."},{speaker:"Hero",line:"Interesting I found one of those rectangle things."},{speaker:"Hero",line:"What were they called again?"},{speaker:"Hero",line:"VHS? It says Home Alone."},{speaker:"Hero",line:"Why on earth would he have Home Alone on Him."},{speaker:"Hero",line:"Well I better keep moving since there is nothing left for me here."}
 ];
+var script=scriptE;
+if (window.localStorage.getItem("language")== "spanish"){
+script=scriptS;
+}
+else 
+{
+	script=scriptE;
+}
+var scriptS=[
+
+{speaker:"Héroe",line:"Maldición, ese pedazo de metal fue duro."},{speaker:"Héroe",line:"¿O era un zombi?"},{speaker:"Héroe",line:"Hmm Me pregunto si ese tipo tiene una pista con él."},{speaker:"Héroe",line:"Interesante, he conseguido una de esas cosas rectangulares."},{speaker:"Héroe",line:"¿Cómo era que se llamaban?"},{speaker:"Héroe",line:"¿VHS? Dice, “Solo en Casa.”"},{speaker:"Héroe",line:"¿Por qué demonios tendría esta película con él? "},{speaker:"Héroe",line:"Bueno, mejor sigo mi camino, no hay nada que hacer aquí."}
+
+
+]
+
+
 var scriptIndex=0;
 
 var surface = canvas.getContext("2d");
@@ -63,7 +79,10 @@ function render()
 	surface.fillStyle = "black";
 	surface.fillRect(TextBar.x,TextBar.y,TextBar.width,TextBar.height);
 	surface.fillStyle = "white";
-	surface.fillText("Press A to Continue",700,680)
+	if (window.localStorage.getItem("language") == "spanish"){
+	surface.fillText("Presiona A para continuar", 650, 680)}
+	else {
+	surface.fillText("Press A to Continue",700,680)}
 	surface.fillText(script[scriptIndex].speaker,100,530);
 	surface.fillText(script[scriptIndex].line,100,580);
 	

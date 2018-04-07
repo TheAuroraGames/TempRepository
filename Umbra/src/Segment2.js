@@ -17,9 +17,21 @@ var TextBar = {
 	height:200
 };
 
-var script=[
+
+var scriptE=[
 	{speaker:"Hero",line:"Huh? Where am I?"},{speaker:"Hero",line:"Why does this place look so familiar?"},{speaker:"Hero",line:"I must be dreaming."},{speaker:"Hero",line:"(Proceeds to pinch themselves) Ouch! Looks like I'm not dreaming..."},{speaker:"Hero",line:"Wait is that the Vampire from that movie?"},{speaker:"Hero",line:"What was it called again?"},{speaker:"Hero",line:"Nosefearatu yah I think that's what it was called."},{speaker:"Hero",line:"Wait I think he is coming this way. Ahhhh!!!"}
 ];
+var script = scriptE
+if (window.localStorage.getItem("language")== "spanish"){
+script=scriptS;
+}
+else 
+{
+	script=scriptE;
+}
+var scriptS=[
+{speaker:"Héroe",line:"¿Huh? ¿Dónde estoy?"},{speaker:"Héroe",line:"¿Por qué este lugar me es tan familiar?"},{speaker:"Héroe",line:"Debo estar soñando."},{speaker:"Héroe",line:"(Procede a pincharse el brazo) ¡Auch!"},{speaker:"Héroe",line:"Espera un momento. ¿Es ese el vampiro de aquella película?"},{speaker:"Héroe",line:"¿Cómo era que se llamaba?"},{speaker:"Héroe",line:"¡Nosefearatu! Sí, creo que así se llamaba. "},{speaker:"Héroe",line:"Espera, creo que viene hacia mí... ¡Ahhhhhhh!"}
+]
 var scriptIndex=0;
 
 var surface = canvas.getContext("2d");
@@ -63,7 +75,11 @@ function render()
 	surface.fillStyle = "black";
 	surface.fillRect(TextBar.x,TextBar.y,TextBar.width,TextBar.height);
 	surface.fillStyle = "white";
-	surface.fillText("Press A to Continue",700,680)
+	if (window.localStorage.getItem("language") == "spanish"){
+	surface.fillText("Presiona A para continuar", 650, 680)}
+	else {	
+	surface.fillText("Press A to Continue",700,680);
+	}
 	surface.fillText(script[scriptIndex].speaker,100,530);
 	surface.fillText(script[scriptIndex].line,100,580);
 	

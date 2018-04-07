@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title> Opciones </title>
+		<meta charset ="utf-8">
+		<link rel ="stylesheet" href="Settings.css">
+	</head>
+	<body>
+		<h1> Opciones</h1>
+		<h2> Volumen Musica </h2>
+		<div id="input">
+		<input id="background" type="range" min="0" max="100" step="1"></input>
+		</div>
+		<h3> Volumen Efecto</h3>
+		<div id="input">
+		<input id="effect" type="range" min="0" max="100" step="1"></input>
+		</div>
+		<div id="input">
+		<button onclick="setEffectVolume">Click para establecer volumen de efectos.</button>
+		</div>
+		<h4> Selecciona Idioma </h4>
+		<div id="input">
+		<input type="radio" name="language" id="english">English<br>
+		<input type="radio" name="language" id="spanish">Spanish<br>
+		<button onclick="setLanguage()">Click para seleccionar el idioma.</button><br>
+		<button onclick="returnMainMenu()">Regresar al Menu Principal</button>
+		</div>
+	</body>
+	<script src="Opcion.js"></script>
+</html>
+	
