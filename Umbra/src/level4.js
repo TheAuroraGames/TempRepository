@@ -313,6 +313,7 @@ function createRobinJump()
 	};
 	}
 	RobinJumpData.JumpSound.src = "../audio/jump.wav";
+	RobinJumpData.JumpSound.volume = window.localStorage.getItem("SFX");
 }
 
 function createRobinPunch()
@@ -352,6 +353,7 @@ function createRobinPunch()
 	}
 	
 	RobinAnimData.PunchSound.src = "../audio/punch.wav";
+	RobinAnimData.PunchSound.volume = window.localStorage.getItem("SFX");
 }
 
 function createRobinDeath()
@@ -439,6 +441,7 @@ function createBossPunch()
 	BossPunchSound: new Audio()
 	};
 	BossPunchData.BossPunchSound.src="../audio/punch.wav";
+	BossPunchData.BossPunchSound.volume = window.localStorage.getItem("SFX");
 }
 function createBossJump()
 {
@@ -457,6 +460,7 @@ function createBossJump()
 	BossJumpSound: new Audio()
 	};
 	BossJumpData.BossJumpSound.src = "../audio/jump.wav";
+	BossJumpData.BossJumpSound.volume = window.localStorage.getItem("SFX");
 }
 
 function createBoss()
