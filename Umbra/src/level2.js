@@ -3,6 +3,8 @@ canvas.width = 1024;
 canvas.height = 1024;
 // RobinHP
 
+window.localStorage.setItem("level","2");
+
 var frameSpeed=33.34;
 
 var robinHP = {

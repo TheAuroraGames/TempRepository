@@ -47,6 +47,28 @@ function loadCharacterSelectionScreen(){
 	window.location.href = 'character_selection.html';
 }
 
+function loadLevelSelectionScreen(){
+	switch(window.localStorage.getItem("level")){
+		case"1":
+			window.location.href ='TheUmbraRealm.html';
+		break;
+		
+		case"2":
+			window.location.href ='level2.html';
+		break;
+		case"3":
+			window.location.href = 'level3.html';
+		break;
+		case"4":
+			window.location.href ='level4.html';
+		break;
+		default:
+			window.location.href ='character_selection.html';
+		
+		
+	}
+}
+
 //function that loads the main menu
 function loadMenu(){
 	window.location.href = 'MainMenu.html';
@@ -131,6 +153,9 @@ function checkClick(mouseEvent){
 			canvas.removeEventListener("mousemove", checkPos);
 			canvas.removeEventListener("mouseup", checkClick);
 		}
+	else if (mouseX > 350 && mouseX < 565 && mouseY > 600 && mouseY < 630){
+			loadLevelSelectionScreen();
+	}
 	else if (mouseX > 388 && mouseX < 515 && mouseY > 650 && mouseY < 696){
 			loadSettings();
 			canvas.removeEventListener("mousemove", checkPos);

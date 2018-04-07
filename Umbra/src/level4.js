@@ -4,6 +4,7 @@ canvas.height = 1024;
 
 var frameSpeed=33.34;
 
+window.localStorage.setItem("level","4");
 
 var robinHP = {
 	// the parameters of the health bars.
