@@ -29,8 +29,8 @@ function setLanguage(){
 	}
 }
 
-function setEffecsVolume(){
-	localStorage.effectsVolume = soundEffects.value;
+function setEffectVolume(){
+	localStorage.setItem("SFX", soundEffects.value/100);
 }
 
 function returnMainMenu(){

@@ -14,11 +14,15 @@
 		<div id="input">
 		<input id="effect" type="range" min="0" max="100" step="1"></input>
 		</div>
+		<div id="input">
+		<button onclick="setEffectVolume">Click to set the volume for the effects.</button>
+		</div>
 		<h4> Select Language </h4>
 		<div id="input">
 		<input type="radio" name="language" id="english">English<br>
 		<input type="radio" name="language" id="spanish">Spanish<br>
-		<button onclick="setLanguage()">Click to set language after selecting a language.</button>
+		<button onclick="setLanguage()">Click to set language after selecting a language.</button><br>
+		<button onclick="returnMainMenu()">Return to Main Menu.</button>
 		</div>
 	</body>
 	<script src="Settings.js"></script>
