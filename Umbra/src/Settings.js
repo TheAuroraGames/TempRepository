@@ -3,14 +3,16 @@ var soundEffects = document.getElementById("effect");
 
 var localStorage = window.localStorage;
 
+var effectsVolume;
+
 backgroundMusic.oninput = function(){
 	//some global variable for background music = this.value;
 }
 
-soundEffects.oninput = function(){
+//soundEffects.oninput = function(){
 	//some global variable for sound effects = this.value;
-	//localStorage.setItem("SFX" );
-}
+	//localStorage.setVolume = soundEffects.value;
+//}
 
 function setLanguage(){
 	if (document.getElementById("english").checked == true){
@@ -19,9 +21,20 @@ function setLanguage(){
 	}
 	
 	else if (document.getElementById("spanish").checked == true){
-		//localStorage.setItem("language","spanish");
+		localStorage.setItem("language","spanish");
 		//set language to spanish
 	}
+	else{
+		localStorage.setItem("language", "english");
+	}
+}
+
+function setEffecsVolume(){
+	localStorage.effectsVolume = soundEffects.value;
+}
+
+function returnMainMenu(){
+	window.location.href = 'MainMenu.html';
 }
 		
 	
