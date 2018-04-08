@@ -63,7 +63,7 @@ UInt = setInterval(update,33.34);
 function createBackground()
 {
 	TextBack = new Image ();
-	TextBack.src = '../img/laboratory.png';
+	TextBack.src = '../img/livingroom.png';
 }
 
 function render()

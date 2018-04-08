@@ -394,7 +394,7 @@ function createRobinDeath()
 function createBackground()
 {
 	BossBack = new Image();
-	BossBack.src = "../img/bedroom.png";
+	BossBack.src = "../img/livingroom.png";
 }
 
 function createHero()
