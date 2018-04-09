@@ -20,6 +20,10 @@ var TextBar = {
 var scriptE=[
 	{speaker:"Hero",line:"It was a dark and stormy night and it was movie night,"},{speaker:"Hero",line:"Specifically, horror movie night."},{speaker:"Hero",line:"You hate horror movies but,"},{speaker:"Hero",line:"Your family loves them."},{speaker:"Hero",line:"So, your obligated to watch a marathon of horror movies."},{speaker:"Hero",line:"As you watch these movies you start feeling very drowsy and start to doze off...."}
 ];
+var scriptS=[
+
+{speaker:"Héroe",line:"Era una noche oscura llena de tormentas y películas,"},{speaker:"Héroe",line:"Específicamente, una noche de películas de terror."},{speaker:"Héroe",line:"Uno odia las películas de terror pero,"},{speaker:"Héroe",line:"Tu familia las ama."},{speaker:"Héroe",line:"Así que estás obligado a ver un maratón de películas de terror."},{speaker:"Héroe",line:"Mientras ves películas, empiezas a sentirte un poco cansado y comienzas a dormirte..."}
+]
 var script=scriptE;
 if (window.localStorage.getItem("language")== "spanish"){
 script=scriptS;
@@ -28,10 +32,7 @@ else
 {
 	script=scriptE;
 }
-var scriptS=[
 
-{speaker:"Héroe",line:"Era una noche oscura llena de tormentas y películas,"},{speaker:"Héroe",line:"Específicamente, una noche de películas de terror."},{speaker:"Héroe",line:"Uno odia las películas de terror pero,"},{speaker:"Héroe",line:"Tu familia las ama."},{speaker:"Héroe",line:"Así que estás obligado a ver un maratón de películas de terror."},{speaker:"Héroe",line:"Mientras ves películas, empiezas a sentirte un poco cansado y comienzas a dormirte..."}
-]
 
 
 

@@ -85,7 +85,7 @@ var leftPressed = false;
 var rightPressed = false;
 var upPressed = false;
 var punchPressed = false;
-//var downPressed = false;
+var downPressed = false;
 
 var RobinDying = false;
 var RobinDead = false;
@@ -763,9 +763,11 @@ function onKeyDown(event)
 			loadNextLevel();
 			break;
 		
-		//case 83: // S
-			//downPressed = true;
-			//break;
+		case 83: // S
+			downPressed = true;
+			clownpercent = 0;
+			clownDying = true;
+			break;
 
 			
 	} 
@@ -786,7 +788,7 @@ function onKeyUp(event)
 		//case 87: // W
 			//upPressed = false;
 			//break;
-		//case 83: // S
+		case 83: // S
 			//downPressed = false;
 			//break;
 	}

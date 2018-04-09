@@ -20,6 +20,11 @@ var TextBar = {
 var scriptE=[
 	{speaker:"Hero",line:"Damn that hunk of metal was tough."},{speaker:"Hero",line:"Or was it a zombie?"},{speaker:"Hero",line:"Hmm I wonder if this guy has a clue on him."},{speaker:"Hero",line:"Interesting I found one of those rectangle things."},{speaker:"Hero",line:"What were they called again?"},{speaker:"Hero",line:"VHS? It says Home Alone."},{speaker:"Hero",line:"Why on earth would he have Home Alone on Him."},{speaker:"Hero",line:"Well I better keep moving since there is nothing left for me here."}
 ];
+var scriptS=[
+
+{speaker:"Héroe",line:"Maldición, ese pedazo de metal fue duro."},{speaker:"Héroe",line:"¿O era un zombi?"},{speaker:"Héroe",line:"Hmm Me pregunto si ese tipo tiene una pista con él."},{speaker:"Héroe",line:"Interesante, he conseguido una de esas cosas rectangulares."},{speaker:"Héroe",line:"¿Cómo era que se llamaban?"},{speaker:"Héroe",line:"¿VHS? Dice, “Solo en Casa.”"},{speaker:"Héroe",line:"¿Por qué demonios tendría esta película con él? "},{speaker:"Héroe",line:"Bueno, mejor sigo mi camino, no hay nada que hacer aquí."}
+];
+
 var script=scriptE;
 if (window.localStorage.getItem("language")== "spanish"){
 script=scriptS;
@@ -28,12 +33,6 @@ else
 {
 	script=scriptE;
 }
-var scriptS=[
-
-{speaker:"Héroe",line:"Maldición, ese pedazo de metal fue duro."},{speaker:"Héroe",line:"¿O era un zombi?"},{speaker:"Héroe",line:"Hmm Me pregunto si ese tipo tiene una pista con él."},{speaker:"Héroe",line:"Interesante, he conseguido una de esas cosas rectangulares."},{speaker:"Héroe",line:"¿Cómo era que se llamaban?"},{speaker:"Héroe",line:"¿VHS? Dice, “Solo en Casa.”"},{speaker:"Héroe",line:"¿Por qué demonios tendría esta película con él? "},{speaker:"Héroe",line:"Bueno, mejor sigo mi camino, no hay nada que hacer aquí."}
-
-
-]
 
 
 var scriptIndex=0;

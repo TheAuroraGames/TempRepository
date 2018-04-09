@@ -77,6 +77,7 @@ var leftPressed = false;
 var rightPressed = false;
 var upPressed = false;
 var punchPressed = false;
+var downPressed = false;
 
 var RobinDying = false;
 var RobinDead = false;
@@ -729,9 +730,11 @@ function onKeyDown(event)
 			loadNextLevel();
 			break;
 		
-		//case 83: // S
-			//downPressed = true;
-			//break;
+		case 83: // S
+			downPressed = true;
+			FrankPercent = 0;
+			FrankDying = true;
+			break;
 
 			
 	} 

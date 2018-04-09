@@ -34,7 +34,12 @@ function setEffectVolume(){
 }
 
 function returnMainMenu(){
-	window.location.href = 'MainMenu.html';
+	if(localStorage.getItem("language")=="spanish"){
+		window.location.href ='Menu.html';
+	}
+	else{
+		window.location.href = 'MainMenu.html';
+	}
 }
 		
 	
