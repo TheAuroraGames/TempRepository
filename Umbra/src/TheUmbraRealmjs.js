@@ -3,6 +3,11 @@ canvas.width = 1024;
 canvas.height = 1024;
 // RobinHP
 
+var BackgroundAudio = new Audio("../audio/Fighting Music.wav");
+BackgroundAudio.loop = true;
+BackgroundAudio.play();
+BackgroundAudio.Volume = 0.5;
+
 window.localStorage.setItem("level","1");
 
 var frameSpeed=33.34;
