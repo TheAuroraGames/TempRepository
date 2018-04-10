@@ -326,7 +326,7 @@ function createRobinJump()
 	}
 	
 	RobinJumpData.JumpSound.src = "../audio/jump.wav";
-	RobinJumpData.JumpSound.volume = window.localStorage.getItem("SFX");
+	//RobinJumpData.JumpSound.volume = window.localStorage.getItem("SFX");
 }
 
 function createRobinPunch()
@@ -367,7 +367,7 @@ function createRobinPunch()
 	
 	
 	RobinAnimData.PunchSound.src = "../audio/punch.wav";
-	RobinAnimData.PunchSound.volume = window.localStorage.getItem("SFX");
+	//RobinAnimData.PunchSound.volume = window.localStorage.getItem("SFX");
 }
 function createRobinDeath()
 {
@@ -456,7 +456,7 @@ function createVampPunch()
 	VampPunchSound: new Audio()
 	};
 	VampPunchData.VampPunchSound.src="../audio/punch.wav";
-	VampPunchData.VampPunchSound.volume = window.localStorage.getItem("SFX");
+	//VampPunchData.VampPunchSound.volume = window.localStorage.getItem("SFX");
 }
 function createVampJump()
 {
@@ -477,7 +477,7 @@ function createVampJump()
 	};
 	
 	VampJumpData.VampJumpSound.src = "../audio/jump.wav";
-	VampJumpData.VampJumpSound.volume = window.localStorage.getItem("SFX");
+	//VampJumpData.VampJumpSound.volume = window.localStorage.getItem("SFX");
 }
 
 function createNose()
