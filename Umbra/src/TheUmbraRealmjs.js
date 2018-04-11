@@ -438,6 +438,7 @@ function createHero()
 	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
+	PlayerData.isDefaultDir=true;
 	}
 	else{
 	Robin.src = "../img/Main.Character(female).png";
@@ -812,7 +813,7 @@ function render()
 			surface.translate(NoseData.width,0);		
 			surface.scale(-1,1);
 			surface.drawImage(vampDeath,VampDeathData.x,VampDeathData.y,512,512,0,0,NoseData.width,NoseData.height);
-			surface.restore();	
+			surface.restore();		
 			surface.restore();
 			}
 			

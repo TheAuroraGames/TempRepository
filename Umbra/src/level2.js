@@ -66,6 +66,7 @@ var Robin;
 var clownDeath;
 var RobinDeath;
 var clownJump;
+var clownWalk;
 
 var MoveTimer = 0;
 var Uptime = Date.now();
@@ -100,6 +101,7 @@ var clownDying = false;
 var clownDead = false;
 var clownisJumping = false;
 var isJumping = false;
+var clownisMoving = false;
 var RobinJumpData;
 var RobinAnimData;
 var RobinWalkData;
@@ -107,6 +109,7 @@ var RobinDeathData;
 var clownDeathData;
 var clownPunchData;
 var clownJumpData;
+var clownWalkData;
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
@@ -120,6 +123,7 @@ createRobinWalk();
 createClowndeath();
 createClownPunch();
 createClownJump();
+createClownWalk();
 createRobinDeath();
 
 
@@ -195,6 +199,9 @@ function update()
 		}
 	}else if (clownJumpState&&clownDead==false){
 	clownJumpState= ! Animate(clownJumpData,dt);
+	}
+	else if (clownisMoving==true&&clownDead==false){
+		Animate(clownWalkData,dt);
 	}
 	
 	if(RobinDying&&RobinDead==false)
@@ -428,6 +435,7 @@ function createHero()
 	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
+	PlayerData.isDefaultDir=true;
 	}
 	else{
 	Robin.src = "../img/Main.Character(female).png";
@@ -439,6 +447,7 @@ function createHero()
 	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
+	PlayerData.isDefaultDir=true;
 	}
 	
 }
@@ -495,6 +504,7 @@ function createClown()
 	clownData.height=450;
 	clownData.gravity = 0.05;
 	clownData.gravitySpeed = 0.00;
+	clownData.isDefaultDir=true;
 	
 }
 
@@ -527,6 +537,7 @@ if(clownDead||clownDying){
 
 function moveclownAI(deltaTime)
 {
+	clownisMoving = false;
 	if (clownJumpState){
 		if (clownisJumping == true)
 	{
@@ -547,13 +558,29 @@ function moveclownAI(deltaTime)
 	}
 	else if (clownData.x != PlayerData.x && clownData.y != PlayerData.y){
 		if (Math.floor(Math.random() * 2) == 1){
-			if (clownData.x < PlayerData.x) clownData.x = clownData.x + (clownSpeed*deltaTime);
-			else if  (clownData.x > PlayerData.x) clownData.x = clownData.x - (clownSpeed*deltaTime);
+			if (clownData.x < PlayerData.x) {
+				clownData.x = clownData.x + (clownSpeed*deltaTime);
+				clownData.isDefaultDir=false;
+				clownisMoving = true;
+			}
+			else if  (clownData.x > PlayerData.x) {
+			clownData.x = clownData.x - (clownSpeed*deltaTime);
+			clownData.isDefaultDir=true;
+			clownisMoving=true;
+			}
 		}
 	}
 	else {
-		if (clownData.x < PlayerData.x) clownData.x = clownData.x + (clownSpeed*deltaTime);
-		else if (clownData.x > PlayerData.x) clownData.x =  clownData.x - (clownSpeed*deltaTime);
+		if (clownData.x < PlayerData.x) {
+			clownData.x = clownData.x + (clownSpeed*deltaTime);
+		clownData.xisDefaultDir=false;
+		clownisMoving=true;
+		}
+		else if (clownData.x > PlayerData.x){ 
+		clownData.x =  clownData.x - (clownSpeed*deltaTime);
+		clownData.isDefaultDir=true;
+		clownisMoving=true;
+		}
 	}
 	if (clownData.x<0) clownData.x =0;
 	if (clownData.x>800) clownData.x= 800;
@@ -590,7 +617,22 @@ function createClowndeath()
 // add sound
 	
 }
-
+function createClownWalk()
+{
+	clownWalk = new Image();
+	clownWalk.src = "../img/Clown_Walking.png";
+	clownWalkData ={
+	row:4,
+	col:4,
+	MaxFrame:12,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping:true,
+	};
+}
 
 function moverobin(deltaTime)
 {
@@ -663,24 +705,83 @@ function render()
 	if (RobinDead == false){
 	if(RobinDying)
 	{
-		surface.drawImage(RobinDeath,RobinDeathData.x, RobinDeathData.y,512,512, PlayerData.x, PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinDeath,RobinDeathData.x, RobinDeathData.y,512,512, PlayerData.x, PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+		surface.save();
+		surface.translate(PlayerData.x,PlayerData.y);	
+		surface.save();
+		surface.translate(PlayerData.width,0);		
+		surface.scale(-1,1);
+		surface.drawImage(RobinDeath,RobinDeathData.x,RobinDeathData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+		surface.restore();	
+		surface.restore();
+		}
 	}
 	else if(punchPressed){
-		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+		surface.save();
+		surface.translate(PlayerData.x,PlayerData.y);	
+		surface.save();
+		surface.translate(PlayerData.width,0);		
+		surface.scale(-1,1);
+		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+		surface.restore();	
+		surface.restore();
+		}
 	// if in jumping state and punching isnt pressed draws the jumping animation.
 	}else if(isJumping){
-		
-		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+		surface.save();
+		surface.translate(PlayerData.x,PlayerData.y);	
+		surface.save();
+		surface.translate(PlayerData.width,0);		
+		surface.scale(-1,1);
+		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+		surface.restore();	
+		surface.restore();
+		}
 	}
 	//if player is not in punching state or in jumping state draws the walking animation.
 	else if(leftPressed||rightPressed){
 		
-		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+		}
 	}
 	// if player is not in any other state draws the basic sprite.
 	
 	else{
-		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){
+			surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		}
+		else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(Robin,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+		}
 	}
 	}	
 	
@@ -688,19 +789,86 @@ function render()
 	{
 		if(clownDying)
 		{
+			if(clownData.isDefaultDir==true){	
 			surface.drawImage(clownDeath, clownDeathData.x, clownDeathData.y, 512,512, clownData.x, clownData.y, clownData.width, clownData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(clownData.x,clownData.y);	
+			surface.save();
+			surface.translate(clownData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(clownDeath,clownDeathData.x,clownDeathData.y,512,512,0,0,clownData.width,clownData.height);
+			surface.restore();	
+			surface.restore();
+			}
 		}
 		else if(clownPunchState == true)
 		{
+			if(clownData.isDefaultDir==true){	
 			surface.drawImage(clownPunch,clownPunchData.x,clownPunchData.y,512,512,clownData.x,clownData.y,clownData.width, clownData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(clownData.x,clownData.y);	
+			surface.save();
+			surface.translate(clownData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(clownPunch,clownPunchData.x,clownPunchData.y,512,512,0,0,clownData.width,clownData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
 		}
 		else if(clownJumpState == true)
 		{
+			if(clownData.isDefaultDir==true){	
 			surface.drawImage(clownJump,clownJumpData.x,clownJumpData.y,512,512,clownData.x,clownData.y,clownData.width,clownData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(clownData.x,clownData.y);	
+			surface.save();
+			surface.translate(clownData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(clownJump,clownJumpData.x,clownJumpData.y,512,512,0,0,clownData.width,clownData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
+		}
+		else if(clownisMoving==true)
+		{
+			if(clownData.isDefaultDir==true){	
+			surface.drawImage(clownWalk,clownWalkData.x,clownWalkData.y,512,512,clownData.x,clownData.y,clownData.width,clownData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(clownData.x,clownData.y);	
+			surface.save();
+			surface.translate(clownData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(clownWalk,clownWalkData.x,clownWalkData.y,512,512,0,0,clownData.width,clownData.height);
+			surface.restore();	
+			surface.restore();
+			}
 		}
 		else
-		{
+		{	
+			if(clownData.isDefaultDir==true){
 			surface.drawImage(clowny,clownData.x,clownData.y,clownData.width,clownData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(clownData.x,clownData.y);	
+			surface.save();
+			surface.translate(clownData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(clowny,0,0,clownData.width,clownData.height);
+			surface.restore();	
+			surface.restore();
+				
+			}
 		}
 	}
 	
@@ -747,9 +915,11 @@ function onKeyDown(event)
 	{
 		case 65: // A
 			leftPressed = true; 
+			PlayerData.isDefaultDir=false;
 			break;
 		case 68: // D
 			rightPressed = true;
+			PlayerData.isDefaultDir=true;
 			break;
 		case 87: // W
 		if (isJumping == false)
