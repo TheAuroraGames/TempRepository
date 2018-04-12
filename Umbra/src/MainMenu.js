@@ -11,21 +11,21 @@ var uInt;
 //variables for each of the buttons
 var mainBackground;
 var start = new Image();
-var levelSelection = new Image();
+var Continue1 = new Image();
 var settings = new Image();
-var exit = new Image();
+var Controls = new Image();
 
 //creates the sources for each of the images for each buttonHeight
 start.src = "../img/Start.png";
-levelSelection.src = "../img/Level Selection.png";
+Continue1.src = "../img/Continue1.png";
 settings.src = "../img/Settings.png";
-exit.src = "../img/Exit.png";
+Controls.src = "../img/Controls.png";
 
 //creates the x and y posistion, as well as the height and width for each button in separate arrays
-var buttonX = [405,350,388,410];
-var buttonY = [545,600,650,705];
-var buttonWidth = [98,208,127,79];
-var buttonHeight = [36,34,46,31];
+var buttonX = [405,285,390,320];
+var buttonY = [545,565,650,660];
+var buttonWidth = [98,350,127,270];
+var buttonHeight = [36,110,46,130];
 
 //creates the variables for the mouse
 var mouseX;
@@ -109,9 +109,9 @@ function render()
 	surface.drawImage(mainBackground,0,0,1211,845);
 	
 	surface.drawImage(start, buttonX[0], buttonY[0], buttonWidth[0], buttonHeight[0]);
-	surface.drawImage(levelSelection, buttonX[1], buttonY[1], buttonWidth[1], buttonHeight[1]);
+	surface.drawImage(Continue1, buttonX[1], buttonY[1], buttonWidth[1], buttonHeight[1]);
 	surface.drawImage(settings, buttonX[2], buttonY[2], buttonWidth[2], buttonHeight[2]);
-	surface.drawImage(exit, buttonX[3], buttonY[3], buttonWidth[3], buttonHeight[3]);
+	surface.drawImage(Controls, buttonX[3], buttonY[3], buttonWidth[3], buttonHeight[3]);
 	
 }
 
