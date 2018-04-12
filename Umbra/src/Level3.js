@@ -43,8 +43,8 @@ var FrankHPBorder = {
 	height: 30
 };
 
-var FrankHealth = 50;
-var FrankMaxHealth=50;
+var FrankHealth = 35;
+var FrankMaxHealth=35;
 var FrankPercent = FrankHealth/ FrankMaxHealth;
 var FrankSpeed = 3;
 
@@ -63,6 +63,7 @@ var Robin;
 var FrankDeath;
 var RobinDeath;
 var FrankJump;
+var FrankWalk;
 
 var MoveTimer = 0;
 var Uptime = Date.now();
@@ -92,6 +93,7 @@ var FrankJumpState = false;
 var FrankPunchState = false;
 var FrankisJumping = false;
 var isJumping = false;
+var FrankisMoving = false;
 var RobinJumpData;
 var RobinAnimData;
 var RobinWalkData;
@@ -99,6 +101,7 @@ var RobinDeathData;
 var FrankDeathData;
 var FrankPunchData;
 var FrankJumpData;
+var FrankWalkData;
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
@@ -113,6 +116,7 @@ createRobinDeath();
 createFrankDeath();
 createFrankPunch();
 createFrankJump();
+createFrankWalk();
 
 function loadNextLevel()
 {
@@ -185,6 +189,10 @@ function update()
 		}
 	}else if (FrankJumpState&&FrankDead==false){
 	FrankJumpState= ! Animate(FrankJumpData,dt);
+	}
+	else if (FrankisMoving==true&&FrankDead==false){
+		Animate(FrankWalkData,dt);
+		
 	}
 	
 	if(RobinDying&&RobinDead==false)
@@ -415,6 +423,7 @@ function createHero()
 	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
+	PlayerData.isDefaultDir=true;
 	}
 	else{
 	Robin.src = "../img/Main.Character(female).png";
@@ -426,6 +435,7 @@ function createHero()
 	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
+	PlayerData.isDefaultDir=true;
 	}
 }
 function createFrankPunch()
@@ -478,6 +488,7 @@ function createFrank()
 	FrankData.height=450;
 	FrankData.gravity = 0.05;
 	FrankData.gravitySpeed = 0.00;
+	PlayerData.isDefaultDir=true;
 }
 
 function FrankAction(deltaTime)
@@ -521,13 +532,29 @@ function moveFrankAI(deltaTime)
 	}
 	else if (FrankData.x != PlayerData.x && FrankData.y != PlayerData.y){
 		if (Math.floor(Math.random() * 2) == 1){
-			if (FrankData.x < PlayerData.x) FrankData.x = FrankData.x + (FrankSpeed*deltaTime);
-			else if  (FrankData.x > PlayerData.x) FrankData.x = FrankData.x - (FrankSpeed*deltaTime);
+			if (FrankData.x < PlayerData.x){
+				FrankData.x = FrankData.x + (FrankSpeed*deltaTime);
+				FrankData.isDefaultDir=false;
+				FrankisMoving=true;
+			}
+			else if  (FrankData.x > PlayerData.x){ 
+				FrankData.x = FrankData.x - (FrankSpeed*deltaTime);
+				FrankData.isDefaultDir=true;
+				FrankisMoving=true;
+			}
 		}
 	}
 	else {
-		if (FrankData.x < PlayerData.x) FrankData.x = FrankData.x + (FrankSpeed*deltaTime);
-		else if (FrankData.x > PlayerData.x) FrankData.x =  FrankData.x - (FrankSpeed*deltaTime);
+		if (FrankData.x < PlayerData.x){
+			FrankData.x = FrankData.x + (FrankSpeed*deltaTime);
+			FrankData.isDefaultDir=false;
+			FrankisMoving=true;
+		}
+		else if (FrankData.x > PlayerData.x){
+			FrankData.x =  FrankData.x - (FrankSpeed*deltaTime);
+			FrankData.isDefaultDir=true;
+			FrankisMoving=true;
+		}
 	}
 	if (FrankData.x<0) FrankData.x =0;
 	if (FrankData.x>800) FrankData.x= 800;
@@ -563,6 +590,23 @@ function createFrankDeath()
 	
 // add sound
 	
+}
+
+function createFrankWalk()
+{
+	FrankWalk = new Image();
+	FrankWalk.src="../img/Zombie_Walk.png";
+	FrankWalkData={
+	row:5,
+	col:4,
+	MaxFrame:20,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping:true,
+	};
 }
 
 function moverobin(deltaTime)
@@ -630,44 +674,169 @@ function render()
 	if (RobinDead == false){
 	if(RobinDying)
 	{
-		surface.drawImage(RobinDeath,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinDeath,RobinDeathData.x, RobinDeathData.y,512,512, PlayerData.x, PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+		surface.save();
+		surface.translate(PlayerData.x,PlayerData.y);	
+		surface.save();
+		surface.translate(PlayerData.width,0);		
+		surface.scale(-1,1);
+		surface.drawImage(RobinDeath,RobinDeathData.x,RobinDeathData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+		surface.restore();	
+		surface.restore();
+		}
 	}
 	
 	else if(punchPressed){
-		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+		surface.save();
+		surface.translate(PlayerData.x,PlayerData.y);	
+		surface.save();
+		surface.translate(PlayerData.width,0);		
+		surface.scale(-1,1);
+		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+		surface.restore();	
+		surface.restore();
+		}
 	// if in jumping state and punching isnt pressed draws the jumping animation.
 	}else if(isJumping){
-		
-		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+		surface.save();
+		surface.translate(PlayerData.x,PlayerData.y);	
+		surface.save();
+		surface.translate(PlayerData.width,0);		
+		surface.scale(-1,1);
+		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+		surface.restore();	
+		surface.restore();
+		}
 	}
 	//if player is not in punching state or in jumping state draws the walking animation.
 	else if(leftPressed||rightPressed){
-		
-		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+		}
 	}
 	// if player is not in any other state draws the basic sprite.
 	
 	else{
-		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){
+			surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		}
+		else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(Robin,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+		}
 	}
 	}	
 	if (FrankDead == false)
 	{
 		if(FrankDying)
 		{
+			if(FrankData.isDefaultDir==true){
 			surface.drawImage(FrankDeath, FrankDeathData.x, FrankDeathData.y, 512,512, FrankData.x, FrankData.y, FrankData.width, FrankData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(FrankData.x,FrankData.y);	
+			surface.save();
+			surface.translate(FrankData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(FrankDeath,FrankDeathData.x,FrankDeathData.y,512,512,0,0,FrankData.width,FrankData.height);
+			surface.restore();	
+			surface.restore();
+			}
 		}
 		else if(FrankPunchState == true)
 		{
+			if(FrankData.isDefaultDir==true){
 			surface.drawImage(FrankPunch,FrankPunchData.x,FrankPunchData.y,512,512,FrankData.x,FrankData.y,FrankData.width,FrankData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(FrankData.x,FrankData.y);	
+			surface.save();
+			surface.translate(FrankData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(FrankPunch,FrankPunchData.x,FrankPunchData.y,512,512,0,0,FrankData.width,FrankData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
 		}
 		else if(FrankJumpState == true)
 		{
+			if(FrankData.isDefaultDir==true){
 			surface.drawImage(FrankJump,FrankJumpData.x,FrankJumpData.y,512,512,FrankData.x,FrankData.y,FrankData.width,FrankData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(FrankData.x,FrankData.y);	
+			surface.save();
+			surface.translate(FrankData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(FrankJump,FrankJumpData.x,FrankJumpData.y,512,512,0,0,FrankData.width,FrankData.height);
+			surface.restore();	
+			surface.restore();
+			}
+		}
+		else if(FrankisMoving==true)
+		{
+			if(FrankData.isDefaultDir==true){	
+			surface.drawImage(FrankWalk,FrankWalkData.x,FrankWalkData.y,512,512,FrankData.x,FrankData.y,FrankData.width,FrankData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(FrankData.x,FrankData.y);	
+			surface.save();
+			surface.translate(FrankData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(FrankWalk,FrankWalkData.x,FrankWalkData.y,512,512,0,0,FrankData.width,FrankData.height);
+			surface.restore();	
+			surface.restore();
+			}
 		}
 		else
-		{
+		{	
+			if(FrankData.isDefaultDir==true){
 			surface.drawImage(Franky,FrankData.x,FrankData.y,FrankData.width,FrankData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(FrankData.x,FrankData.y);	
+			surface.save();
+			surface.translate(FrankData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(Franky,0,0,FrankData.width,FrankData.height);
+			surface.restore();	
+			surface.restore();
+				
+			}
+			
 		}
 	}
 	
@@ -713,10 +882,12 @@ function onKeyDown(event)
 	switch (event.keyCode)
 	{
 		case 65: // A
-			leftPressed = true; 
+			leftPressed = true;
+			PlayerData.isDefaultDir=false;
 			break;
 		case 68: // D
 			rightPressed = true;
+			PlayerData.isDefaultDir=true;
 			break;
 		case 87: // W
 		if (isJumping == false)

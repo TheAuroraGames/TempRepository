@@ -46,8 +46,8 @@ var clownHPBorder = {
 	height: 30
 };
 
-var clownhealth = 10;
-var clownmaxhealth=10;
+var clownhealth = 20;
+var clownmaxhealth=20;
 var clownpercent = clownhealth/ clownmaxhealth;
 var clownSpeed = 5;
 
@@ -573,7 +573,7 @@ function moveclownAI(deltaTime)
 	else {
 		if (clownData.x < PlayerData.x) {
 			clownData.x = clownData.x + (clownSpeed*deltaTime);
-		clownData.xisDefaultDir=false;
+		clownData.isDefaultDir=false;
 		clownisMoving=true;
 		}
 		else if (clownData.x > PlayerData.x){ 
