@@ -4,6 +4,11 @@ canvas.height = 1024;
 
 var frameSpeed=33.34;
 
+var BackgroundAudio = new Audio("../audio/Fighting Music.wav");
+BackgroundAudio.loop = true;
+BackgroundAudio.play();
+BackgroundAudio.Volume = 0.5;
+
 window.localStorage.setItem("level","4");
 
 var robinHP = {
@@ -77,6 +82,7 @@ var leftPressed = false;
 var rightPressed = false;
 var upPressed = false;
 var punchPressed = false;
+var downPressed = false;
 
 var RobinDying = false;
 var RobinDead = false;
@@ -313,7 +319,7 @@ function createRobinJump()
 	};
 	}
 	RobinJumpData.JumpSound.src = "../audio/jump.wav";
-	RobinJumpData.JumpSound.volume = window.localStorage.getItem("SFX");
+	//RobinJumpData.JumpSound.volume = window.localStorage.getItem("SFX");
 }
 
 function createRobinPunch()
@@ -353,7 +359,7 @@ function createRobinPunch()
 	}
 	
 	RobinAnimData.PunchSound.src = "../audio/punch.wav";
-	RobinAnimData.PunchSound.volume = window.localStorage.getItem("SFX");
+	//RobinAnimData.PunchSound.volume = window.localStorage.getItem("SFX");
 }
 
 function createRobinDeath()
@@ -394,7 +400,7 @@ function createRobinDeath()
 function createBackground()
 {
 	BossBack = new Image();
-	BossBack.src = "../img/bedroom.png";
+	BossBack.src = "../img/livingroom.png";
 }
 
 function createHero()
@@ -441,7 +447,7 @@ function createBossPunch()
 	BossPunchSound: new Audio()
 	};
 	BossPunchData.BossPunchSound.src="../audio/punch.wav";
-	BossPunchData.BossPunchSound.volume = window.localStorage.getItem("SFX");
+	//BossPunchData.BossPunchSound.volume = window.localStorage.getItem("SFX");
 }
 function createBossJump()
 {
@@ -460,7 +466,7 @@ function createBossJump()
 	BossJumpSound: new Audio()
 	};
 	BossJumpData.BossJumpSound.src = "../audio/jump.wav";
-	BossJumpData.BossJumpSound.volume = window.localStorage.getItem("SFX");
+	//BossJumpData.BossJumpSound.volume = window.localStorage.getItem("SFX");
 }
 
 function createBoss()
@@ -731,9 +737,11 @@ function onKeyDown(event)
 			loadNextLevel();
 			break;
 		
-		//case 83: // S
-			//downPressed = true;
-			//break;
+		case 83: // S
+			downPressed = true;
+			BossPercent = 0;
+			BossDying =true;
+			break;
 
 			
 	} 

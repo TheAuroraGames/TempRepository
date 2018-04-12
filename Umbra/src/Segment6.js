@@ -20,6 +20,11 @@ var TextBar = {
 var scriptE=[
 	{speaker:"Hero",line:"Huh,looks like I'm in some kind of laboratory now."},{speaker:"Hero",line:"I don't like this place,"},{speaker:"Hero",line:"it reminds me of science class."},{speaker:"Hero",line:"is this place empty?"},{speaker:"Hero",line:"No, wait."},{speaker:"Hero",line:"It looks like there's a body under a sheet on that table over there."},{speaker:"Hero",line:"Let's take a look."},{speaker:"Hero",line:"It kinda reminds me of FranknSteve."},{speaker:"Hero",line:"Uh-oh, he's waking up....."}
 ];
+
+var scriptS=[
+
+{speaker:"Héroe",line:"Huh, parece que ahora me encuentro en un laboratorio."},{speaker:"Héroe",line:"No me gusta este lugar,"},{speaker:"Héroe",line:"Me recuerda a mi clase de ciencias."},{speaker:"Héroe",line:"¿Esta vacío este lugar?"},{speaker:"Héroe",line:"No, espera."},{speaker:"Héroe",line:":Parece que hay un cuerpo bajo sabanas en esa mesa de allí."},{speaker:"Héroe",line:"Miremos"},{speaker:"Héroe",line:"Me recuerda un poco a FranknSteve."},{speaker:"Héroe",line:"Uh-oh, esta despertando…"}
+];
 var script=scriptE;
 if (window.localStorage.getItem("language")== "spanish"){
 script=scriptS;
@@ -28,10 +33,7 @@ else
 {
 	script=scriptE;
 }
-var scriptS=[
 
-{speaker:"Héroe",line:"Huh, parece que ahora me encuentro en un laboratorio."},{speaker:"Héroe",line:"No me gusta este lugar,"},{speaker:"Héroe",line:"Me recuerda a mi clase de ciencias."},{speaker:"Héroe",line:"¿Esta vacío este lugar?"},{speaker:"Héroe",line:"No, espera."},{speaker:"Héroe",line:":Parece que hay un cuerpo bajo sabanas en esa mesa de allí."},{speaker:"Héroe",line:"Miremos"},{speaker:"Héroe",line:"Me recuerda un poco a FranknSteve."},{speaker:"Uh-oh, esta despertando…"}
-]
 var scriptIndex=0;
 
 var surface = canvas.getContext("2d");

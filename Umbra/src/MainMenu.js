@@ -44,7 +44,12 @@ createHand();
 
 //function that loads the character selection screen
 function loadCharacterSelectionScreen(){
-	window.location.href = 'character_selection.html';
+	if(window.localStorage.getItem("language")=="spanish"){
+		window.location.href = 'SeleccionarPersonaje.html';
+	}
+	else{
+		window.location.href ='character_selection.html';
+	}
 }
 
 function loadLevelSelectionScreen(){
@@ -63,19 +68,27 @@ function loadLevelSelectionScreen(){
 			window.location.href ='level4.html';
 		break;
 		default:
+		if(window.localStorage.getItem("language")=="spanish"){
+			window.location.href ='SeleccionarPersonaje.html';
+		}
+		else{
 			window.location.href ='character_selection.html';
-		
-		
+		}
 	}
 }
 
 //function that loads the main menu
-function loadMenu(){
-	window.location.href = 'MainMenu.html';
-}
+//function loadMenu(){
+	//window.location.href = 'MainMenu.html';
+//}
 
 function loadSettings(){
-	window.location.href = 'Settings.html'
+	if(window.localStorage.getItem("language")=="spanish"){
+		window.location.href = 'Opcion.html';
+	}
+	else{
+		window.location.href = 'Settings.html';
+	}
 }
 
 //function that creates the background
@@ -162,13 +175,13 @@ function checkClick(mouseEvent){
 			canvas.removeEventListener("mouseup", checkClick);
 	}
 	else if (mouseX > 410 && mouseX < 489 && mouseY > 705 && mouseY < 736){ //this does not work for Firefox, only for Chrome
-			close();
+			window.close();
 			canvas.removeEventListener("mousemove", checkPos);
 			canvas.removeEventListener("mouseup", checkClick);
 		}
 	else
 		{
-			loadMenu();
+			//loadMenu();
 		}
 	}	
 	

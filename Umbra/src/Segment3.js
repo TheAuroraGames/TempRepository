@@ -20,6 +20,12 @@ var TextBar = {
 var scriptE=[
 	{speaker:"Hero",line:"OMG. I just killed a vampire."},{speaker:"Hero",line:"Wait can a vampire be dead? (hmm is water wet?)"},{speaker:"Hero",line:"Hmm?"},{speaker:"Hero",line:"He was holding something."},{speaker:"Hero",line:"It was a piece of paper."},{speaker:"Hero",line:"It said 'Big' hmmm why would a vampire carry a piece of paper?"},{speaker:"Hero",line:"Eh"},{speaker:"Hero",line:"Doesn't matter I just got to get out of here."}
 ];
+
+var scriptS=[
+
+{speaker:"Héroe",line:"¡Dios mío! Acabo de matar a un vampiro."},{speaker:"Héroe",line:"¿Espera, los vampiros pueden morir? (hmm ¿es al agua algo mojado?)"},{speaker:"Héroe",line:"¿Hmm?"},{speaker:"Héroe",line:"Él estaba sosteniendo algo."},{speaker:"Héroe",line:"Era un pedazo de papel."},{speaker:"Héroe",line:"Dice “Gran” hmmm, ¿por qué un vampiro llevaría un pedazo de papel?"},{speaker:"Héroe",line:"Eh."},{speaker:"Héroe",line:"No importa, solo necesito salir de este lugar."}
+];
+
 var script=scriptE;
 if (window.localStorage.getItem("language")== "spanish"){
 script=scriptS;
@@ -28,10 +34,7 @@ else
 {
 	script=scriptE;
 }
-var scriptS=[
 
-{speaker:"Héroe",line:"¡Dios mío! Acabo de matar a un vampiro."},{speaker:"Héroe",line:"¿Espera, los vampiros pueden morir? (hmm ¿es al agua algo mojado?)"},{speaker:"Héroe",line:"¿Hmm?"},{speaker:"Héroe",line:"Él estaba sosteniendo algo."},{speaker:"Héroe",line:"Era un pedazo de papel."},{speaker:"Héroe",line:"Dice “Gran” hmmm, ¿por qué un vampiro llevaría un pedazo de papel?"},{speaker:"Héroe",line:"Eh."},{speaker:"Héroe",line:"No importa, solo necesito salir de este lugar."}
-]
 var scriptIndex=0;
 
 var surface = canvas.getContext("2d");

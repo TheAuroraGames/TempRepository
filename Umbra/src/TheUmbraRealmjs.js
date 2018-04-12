@@ -3,6 +3,11 @@ canvas.width = 1024;
 canvas.height = 1024;
 // RobinHP
 
+var BackgroundAudio = new Audio("../audio/Fighting Music.wav");
+BackgroundAudio.loop = true;
+BackgroundAudio.play();
+BackgroundAudio.Volume = 0.5;
+
 window.localStorage.setItem("level","1");
 
 var frameSpeed=33.34;
@@ -61,6 +66,7 @@ var Robin;
 var VampDeath;
 var RobinDeath;
 var VampJump;
+var VampWalk;
 
 var MoveTimer = 0;
 var Uptime = Date.now();
@@ -85,7 +91,7 @@ var leftPressed = false;
 var rightPressed = false;
 var upPressed = false;
 var punchPressed = false;
-//var downPressed = false;
+var downPressed = false;
 
 var RobinDying = false;
 var RobinDead = false;
@@ -95,6 +101,7 @@ var vampDying = false;
 var vampDead = false;
 var VampisJumping = false;
 var isJumping = false;
+var VampIsMoving = false;
 var RobinJumpData;
 var RobinAnimData;
 var RobinWalkData;
@@ -102,6 +109,7 @@ var RobinDeathData;
 var vampDeathData;
 var VampPunchData;
 var VampJumpData;
+var VampWalkData;
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
@@ -115,6 +123,7 @@ createRobinWalk();
 createVampdeath();
 createVampPunch();
 createVampJump();
+createVampWalk();
 createRobinDeath();
 
 
@@ -190,6 +199,10 @@ function update()
 		}
 	}else if (VampJumpState&&vampDead==false){
 	VampJumpState= ! Animate(VampJumpData,dt);
+	}
+	else if(VampIsMoving==true &&vampDead==false){
+		Animate(VampWalkData,dt);
+		
 	}
 	
 	if(RobinDying&&RobinDead==false)
@@ -326,7 +339,7 @@ function createRobinJump()
 	}
 	
 	RobinJumpData.JumpSound.src = "../audio/jump.wav";
-	RobinJumpData.JumpSound.volume = window.localStorage.getItem("SFX");
+	//RobinJumpData.JumpSound.volume = window.localStorage.getItem("SFX");
 }
 
 function createRobinPunch()
@@ -367,7 +380,7 @@ function createRobinPunch()
 	
 	
 	RobinAnimData.PunchSound.src = "../audio/punch.wav";
-	RobinAnimData.PunchSound.volume = window.localStorage.getItem("SFX");
+	//RobinAnimData.PunchSound.volume = window.localStorage.getItem("SFX");
 }
 function createRobinDeath()
 {
@@ -425,6 +438,7 @@ function createHero()
 	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
+	PlayerData.isDefaultDir=true;
 	}
 	else{
 	Robin.src = "../img/Main.Character(female).png";
@@ -436,6 +450,7 @@ function createHero()
 	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
+	PlayerData.isDefaultDir=true;
 	}
 }
 
@@ -456,7 +471,7 @@ function createVampPunch()
 	VampPunchSound: new Audio()
 	};
 	VampPunchData.VampPunchSound.src="../audio/punch.wav";
-	VampPunchData.VampPunchSound.volume = window.localStorage.getItem("SFX");
+	//VampPunchData.VampPunchSound.volume = window.localStorage.getItem("SFX");
 }
 function createVampJump()
 {
@@ -477,7 +492,7 @@ function createVampJump()
 	};
 	
 	VampJumpData.VampJumpSound.src = "../audio/jump.wav";
-	VampJumpData.VampJumpSound.volume = window.localStorage.getItem("SFX");
+	//VampJumpData.VampJumpSound.volume = window.localStorage.getItem("SFX");
 }
 
 function createNose()
@@ -491,6 +506,7 @@ function createNose()
 	NoseData.height=450;
 	NoseData.gravity = 0.05;
 	NoseData.gravitySpeed = 0.00;
+	NoseData.isDefaultDir=true;
 	
 }
 
@@ -520,8 +536,11 @@ if(vampDead||vampDying){
 		
 }
 
+
+
 function moveNoseAI(deltaTime)
 {
+	VampIsMoving = false;
 	if (VampJumpState){
 		if (VampisJumping == true)
 	{
@@ -542,13 +561,29 @@ function moveNoseAI(deltaTime)
 	}
 	else if (NoseData.x != PlayerData.x && NoseData.y != PlayerData.y){
 		if (Math.floor(Math.random() * 2) == 1){
-			if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + (NoseSpeed*deltaTime);
-			else if  (NoseData.x > PlayerData.x) NoseData.x = NoseData.x - (NoseSpeed*deltaTime);
+			if (NoseData.x < PlayerData.x){ 
+			NoseData.x = NoseData.x + (NoseSpeed*deltaTime);
+			NoseData.isDefaultDir=false;
+			VampIsMoving=true;
+			}
+			else if  (NoseData.x > PlayerData.x){ 
+			NoseData.x = NoseData.x - (NoseSpeed*deltaTime);
+			NoseData.isDefaultDir=true;
+				VampIsMoving=true;
+			}
 		}
 	}
 	else {
-		if (NoseData.x < PlayerData.x) NoseData.x = NoseData.x + (NoseSpeed*deltaTime);
-		else if (NoseData.x > PlayerData.x) NoseData.x =  NoseData.x - (NoseSpeed*deltaTime);
+		if (NoseData.x < PlayerData.x){ 
+		NoseData.x = NoseData.x + (NoseSpeed*deltaTime);
+		NoseData.isDefaultDir=false;
+			VampIsMoving=true;
+		}
+		else if (NoseData.x > PlayerData.x){
+			NoseData.x =  NoseData.x - (NoseSpeed*deltaTime);
+			NoseData.isDefaultDir=true;
+				VampIsMoving=true;
+			}
 	}
 	if (NoseData.x<0) NoseData.x =0;
 	if (NoseData.x>800) NoseData.x= 800;
@@ -586,6 +621,22 @@ function createVampdeath()
 	
 }
 
+function createVampWalk()
+{
+	VampWalk = new Image();
+	VampWalk.src = "../img/Vampire_Walk.png";
+	VampWalkData = {
+	row:3,
+	col:3,
+	MaxFrame:8,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping:true,
+	};
+}
 
 function moverobin(deltaTime)
 {
@@ -632,6 +683,7 @@ function moverobin(deltaTime)
 
 function render()
 {
+	
 	//Clears Canvas
 	surface.clearRect(0,0,canvas.width,canvas.height);
 	//draws background
@@ -658,24 +710,92 @@ function render()
 	if (RobinDead == false){
 	if(RobinDying)
 	{
-		surface.drawImage(RobinDeath,RobinDeathData.x, RobinDeathData.y,512,512, PlayerData.x, PlayerData.y,PlayerData.width,PlayerData.height);
+			if(PlayerData.isDefaultDir==true){	
+			surface.drawImage(RobinDeath,RobinDeathData.x, RobinDeathData.y,512,512, PlayerData.x, PlayerData.y,PlayerData.width,PlayerData.height);	
+			}
+			else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(RobinDeath,RobinDeathData.x,RobinDeathData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
 	}
 	else if(punchPressed){
-		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+			if(PlayerData.isDefaultDir==true){	
+			surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+			}
+			else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+			}
+		
 	// if in jumping state and punching isnt pressed draws the jumping animation.
 	}else if(isJumping){
+			if(PlayerData.isDefaultDir==true){	
+			surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+			}
+			else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+			}
 		
-		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+	
+		
 	}
 	//if player is not in punching state or in jumping state draws the walking animation.
 	else if(leftPressed||rightPressed){
 		
-		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+		}
+		
+	
 	}
 	// if player is not in any other state draws the basic sprite.
 	
 	else{
-		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		
+		if(PlayerData.isDefaultDir==true){
+			surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		}
+		else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(Robin,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+		}
 	}
 	}	
 	
@@ -683,19 +803,90 @@ function render()
 	{
 		if(vampDying)
 		{
-			surface.drawImage(vampDeath, vampDeathData.x, vampDeathData.y, 512,512, NoseData.x, NoseData.y, NoseData.width, NoseData.height);
+			if(NoseData.isDefaultDir==true){	
+			surface.drawImage(vampDeath, vampDeathData.x, vampDeathData.y, 512,512, NoseData.x, NoseData.y, NoseData.width, NoseData.height);	
+			}
+			else{
+			surface.save();
+			surface.translate(NoseData.x,NoseData.y);	
+			surface.save();
+			surface.translate(NoseData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(vampDeath,VampDeathData.x,VampDeathData.y,512,512,0,0,NoseData.width,NoseData.height);
+			surface.restore();		
+			surface.restore();
+			}
+			
 		}
 		else if(VampPunchState == true)
 		{
-			surface.drawImage(VampPunch,VampPunchData.x,VampPunchData.y,512,512,NoseData.x,NoseData.y,NoseData.width, NoseData.height);
+			if(NoseData.isDefaultDir==true){	
+			surface.drawImage(VampPunch,VampPunchData.x,VampPunchData.y,512,512,NoseData.x,NoseData.y,NoseData.width, NoseData.height);	
+			}
+			else{
+			surface.save();
+			surface.translate(NoseData.x,NoseData.y);	
+			surface.save();
+			surface.translate(NoseData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(VampPunch,VampPunchData.x,VampPunchData.y,512,512,0,0,NoseData.width,NoseData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
 		}
 		else if(VampJumpState == true)
 		{
-			surface.drawImage(VampJump,VampJumpData.x,VampJumpData.y,512,512,NoseData.x,NoseData.y,NoseData.width,NoseData.height);
+			if(NoseData.isDefaultDir==true){	
+			surface.drawImage(VampJump,VampJumpData.x,VampJumpData.y,512,512,NoseData.x,NoseData.y,NoseData.width,NoseData.height);	
+			}
+			else{
+			surface.save();
+			surface.translate(NoseData.x,NoseData.y);	
+			surface.save();
+			surface.translate(NoseData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(VampJump,VampJumpData.x,VampJumpData.y,512,512,0,0,NoseData.width,NoseData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
+		}
+		else if(VampIsMoving == true)
+		{
+			if(NoseData.isDefaultDir==true){	
+			surface.drawImage(VampWalk, VampWalkData.x,VampWalkData.y,512,512,NoseData.x,NoseData.y,NoseData.width,NoseData.height);	
+			}
+			else{
+			surface.save();
+			surface.translate(NoseData.x,NoseData.y);	
+			surface.save();
+			surface.translate(NoseData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(VampWalk,VampWalkData.x,VampWalkData.y,512,512,0,0,NoseData.width,NoseData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
 		}
 		else
 		{
+			if(NoseData.isDefaultDir == true){
 			surface.drawImage(Nosey,NoseData.x,NoseData.y,NoseData.width,NoseData.height);
+			}
+			else{
+				
+				surface.save();
+				surface.translate(NoseData.x,NoseData.y);
+				surface.save();
+				surface.translate(NoseData.width,0);		// save current state
+				surface.scale(-1,1);
+				surface.drawImage(Nosey,0,0,NoseData.width,NoseData.height);
+				surface.restore();
+				surface.restore();
+				
+				
+			}
 		}
 	}
 	
@@ -742,9 +933,11 @@ function onKeyDown(event)
 	{
 		case 65: // A
 			leftPressed = true; 
+			PlayerData.isDefaultDir=false;
 			break;
 		case 68: // D
 			rightPressed = true;
+			PlayerData.isDefaultDir=true;
 			break;
 		case 87: // W
 		if (isJumping == false)
@@ -763,9 +956,11 @@ function onKeyDown(event)
 			loadNextLevel();
 			break;
 		
-		//case 83: // S
-			//downPressed = true;
-			//break;
+		case 83: // S
+			downPressed = true;
+			Nosepercent = 0;
+			vampDying = true;
+			break;
 
 			
 	} 
