@@ -488,7 +488,7 @@ function createFrank()
 	FrankData.height=450;
 	FrankData.gravity = 0.05;
 	FrankData.gravitySpeed = 0.00;
-	PlayerData.isDefaultDir=true;
+	FrankData.isDefaultDir=true;
 }
 
 function FrankAction(deltaTime)

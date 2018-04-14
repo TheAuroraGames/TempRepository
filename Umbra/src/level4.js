@@ -43,8 +43,8 @@ var BossHPBorder = {
 	height: 30
 };
 
-var BossHealth = 70;
-var BossMaxHealth= 70;
+var BossHealth = 45;
+var BossMaxHealth= 45;
 var BossPercent = BossHealth/ BossMaxHealth;
 var BossSpeed = 5;
 
@@ -63,6 +63,7 @@ var Robin;
 var BossDeath;
 var RobinDeath;
 var BossJump;
+var BossWalk;
 
 var MoveTimer = 0;
 var Uptime = Date.now();
@@ -92,6 +93,7 @@ var BossJumpState = false;
 var BossPunchState = false;
 var BossisJumping = false;
 var isJumping = false;
+var BossisMoving = false;
 var RobinJumpData;
 var RobinAnimData;
 var RobinWalkData;
@@ -99,6 +101,7 @@ var RobinDeathData;
 var BossDeathData;
 var BossPunchData;
 var BossJumpData;
+var BossWalkData;
 //Keyboard Listeners
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
@@ -113,6 +116,7 @@ createRobinDeath();
 createBossDeath();
 createBossPunch();
 createBossJump();
+createBossWalk();
 
 function loadNextLevel()
 {
@@ -185,6 +189,10 @@ function update()
 		}
 	}else if (BossJumpState&&BossDead==false){
 	BossJumpState= ! Animate(BossJumpData,dt);
+	}
+	else if(BossisMoving==true&&BossDead==false)
+	{
+		Animate(BossWalkData,dt);
 	}
 	
 	if(RobinDying&&RobinDead==false)
@@ -416,6 +424,7 @@ function createHero()
 	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
+	PlayerData.isDefaultDir=true;
 	}
 	else{
 	Robin.src = "../img/Main.Character(female).png";
@@ -427,6 +436,7 @@ function createHero()
 	//gravity of the player.
 	PlayerData.gravity = 0.05;
 	PlayerData.gravitySpeed = 0.00;
+	PlayerData.isDefaultDir=true;
 	}
 	
 }
@@ -480,6 +490,7 @@ function createBoss()
 	BossData.height=450;
 	BossData.gravity = 0.005;
 	BossData.gravitySpeed = 0.00;
+	BossData.isDefaultDir=true;
 }
 
 function BossAction(deltaTime)
@@ -523,13 +534,29 @@ function moveBossAI(deltaTime)
 	}
 	else if (BossData.x != PlayerData.x && BossData.y != PlayerData.y){
 		if (Math.floor(Math.random() * 2) == 1){
-			if (BossData.x < PlayerData.x) BossData.x = BossData.x + (BossSpeed*deltaTime);
-			else if  (BossData.x > PlayerData.x) BossData.x = BossData.x - (BossSpeed*deltaTime);
+			if (BossData.x < PlayerData.x){
+				BossData.x = BossData.x + (BossSpeed*deltaTime);
+				BossData.isDefaultDir=false;
+				BossisMoving=true;
+			}
+			else if  (BossData.x > PlayerData.x){
+				BossData.x = BossData.x - (BossSpeed*deltaTime);
+				BossData.isDefaultDir=true;
+				BossisMoving=true;
+			}
 		}
 	}
 	else {
-		if (BossData.x < PlayerData.x) BossData.x = BossData.x + (BossSpeed*deltaTime);
-		else if (BossData.x > PlayerData.x) BossData.x =  BossData.x - (BossSpeed*deltaTime);
+		if (BossData.x < PlayerData.x){
+		BossData.x = BossData.x + (BossSpeed*deltaTime);
+		BossData.isDefaultDir=false;
+		BossisMoving=true;
+		}
+		else if (BossData.x > PlayerData.x){
+		BossData.x =  BossData.x - (BossSpeed*deltaTime);
+		BossData.isDefaultDir=true;
+		BossisMoving=true;
+		}
 	}
 	if (BossData.x<0) BossData.x =0;
 	if (BossData.x>800) BossData.x= 800;
@@ -565,6 +592,23 @@ function createBossDeath()
 	
 // add sound
 	
+}
+
+function createBossWalk()
+{
+	BossWalk = new Image();
+	BossWalk.src="../img/boss_walking.png";
+	BossWalkData={
+	row:3,
+	col:3,
+	MaxFrame:9,
+	x:0,
+	y:0,
+	width:512,
+	height:512,
+	currentFrame:0,
+	looping:true, 
+	};
 }
 
 function moverobin(deltaTime)
@@ -632,44 +676,173 @@ function render()
 	if (RobinDead == false){
 	if(RobinDying)
 	{
+		if(PlayerData.isDefaultDir==true){
 		surface.drawImage(RobinDeath,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		}
+		else{
+		surface.save();
+		surface.translate(PlayerData.x,PlayerData.y);
+		surface.save();
+		surface.translate(PlayerData.width,0);
+		surface.scale(-1,1);
+		surface.drawImage(RobinDeath,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		surface.restore();
+		surface.restore();
+		}
 	}
 	
 	else if(punchPressed){
+		if(PlayerData.isDefaultDir==true){
 		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		}
+		else{
+		surface.save();
+		surface.translate(PlayerData.x,PlayerData.y);	
+		surface.save();
+		surface.translate(PlayerData.width,0);		
+		surface.scale(-1,1);
+		surface.drawImage(RobinPunch,RobinAnimData.x,RobinAnimData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+		surface.restore();	
+		surface.restore();
+		}
 	// if in jumping state and punching isnt pressed draws the jumping animation.
 	}else if(isJumping){
-		
-		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+		surface.save();
+		surface.translate(PlayerData.x,PlayerData.y);	
+		surface.save();
+		surface.translate(PlayerData.width,0);		
+		surface.scale(-1,1);
+		surface.drawImage(RobinJump,RobinJumpData.x,RobinJumpData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+		surface.restore();	
+		surface.restore();
+		}
 	}
 	//if player is not in punching state or in jumping state draws the walking animation.
 	else if(leftPressed||rightPressed){
-		
-		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){	
+		surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);	
+		}
+		else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(RobinWalk,RobinWalkData.x,RobinWalkData.y,512,512,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+		}
 	}
 	// if player is not in any other state draws the basic sprite.
 	
 	else{
-		surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		if(PlayerData.isDefaultDir==true){
+			surface.drawImage(Robin,PlayerData.x,PlayerData.y,PlayerData.width,PlayerData.height);
+		}
+		else{
+			surface.save();
+			surface.translate(PlayerData.x,PlayerData.y);	
+			surface.save();
+			surface.translate(PlayerData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(Robin,0,0,PlayerData.width,PlayerData.height);
+			surface.restore();	
+			surface.restore();
+		}
 	}
 	}	
 	if (BossDead == false)
 	{
 		if(BossDying)
 		{
+			if(BossData.isDefaultDir==true){
 			surface.drawImage(BossDeath, BossDeathData.x, BossDeathData.y, 512,512, BossData.x, BossData.y, BossData.width, BossData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(BossData.x,BossData.y);	
+			surface.save();
+			surface.translate(BossData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(BossDeath,BossDeathData.x,BossDeathData.y,512,512,0,0,BossData.width,BossData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
 		}
 		else if(BossPunchState == true)
 		{
+			if(BossData.isDefaultDir==true){
 			surface.drawImage(BossPunch,BossPunchData.x,BossPunchData.y,512,512,BossData.x,BossData.y,BossData.width,BossData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(BossData.x,BossData.y);	
+			surface.save();
+			surface.translate(BossData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(BossPunch,BossPunchData.x,BossPunchData.y,512,512,0,0,BossData.width,BossData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
 		}
 		else if(BossJumpState == true)
 		{
+			if(BossData.isDefaultDir==true){
 			surface.drawImage(BossJump,BossJumpData.x,BossJumpData.y,512,512,BossData.x,BossData.y,BossData.width,BossData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(BossData.x,BossData.y);	
+			surface.save();
+			surface.translate(BossData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(BossJump,BossJumpData.x,BossJumpData.y,512,512,0,0,BossData.width,BossData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
+		}
+		else if(BossisMoving==true)
+		{
+			if(BossData.isDefaultDir==true){
+			surface.drawImage(BossWalk,BossWalkData.x,BossWalkData.y,512,512,BossData.x,BossData.y,BossData.width,BossData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(BossData.x,BossData.y);	
+			surface.save();
+			surface.translate(BossData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(BossWalk,BossWalkData.x,BossWalkData.y,512,512,0,0,BossData.width,BossData.height);
+			surface.restore();	
+			surface.restore();
+			}
+			
+			
 		}
 		else
 		{
+			if(BossData.isDefaultDir==true){
 			surface.drawImage(Boss,BossData.x,BossData.y,BossData.width,BossData.height);
+			}
+			else{
+			surface.save();
+			surface.translate(BossData.x,BossData.y);	
+			surface.save();
+			surface.translate(BossData.width,0);		
+			surface.scale(-1,1);
+			surface.drawImage(Boss,0,0,BossData.width,BossData.height);
+			surface.restore();	
+			surface.restore();
+				
+			}
+			
 		}
 	}
 	
@@ -716,9 +889,11 @@ function onKeyDown(event)
 	{
 		case 65: // A
 			leftPressed = true; 
+			PlayerData.isDefaultDir=false;
 			break;
 		case 68: // D
 			rightPressed = true;
+			PlayerData.isDefaultDir=true;
 			break;
 		case 87: // W
 		if (isJumping == false)
