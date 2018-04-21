@@ -1,7 +1,7 @@
 //creates the canvas
 var canvas = document.querySelector("canvas");
-canvas.width = 1211;
-canvas.height = 845;
+canvas.width = 1024;
+canvas.height = 1024;
 
 //creates the surface to draw on canvas
 var surface = canvas.getContext("2d");
@@ -23,9 +23,9 @@ Controles.src = "../img/Controles.png";
 
 //creates the x and y posistion, as well as the height and width for each button in separate arrays
 var buttonX = [390,365,375,380];
-var buttonY = [555,590,645,695];
+var buttonY = [510,560,610,655];
 var buttonWidth = [145,210,175,180];
-var buttonHeight = [45,65,60,65];
+var buttonHeight = [30,30,30,30];
 
 //creates the variables for the mouse
 var mouseX;
@@ -73,7 +73,17 @@ function loadLevelSelectionScreen(){
 
 
 function loadSettings(){
-	window.location.href = 'Opcion.html'
+	if(window.localStorage.getItem("language")=="english"){
+		window.location.href = 'Settings2.html';
+	}
+	else{
+		window.location.href = 'Opciones2.html';
+	}
+}
+
+function loadControls()
+{
+	window.location.href ='Controls.html';
 }
 
 //function that creates the background
@@ -104,7 +114,7 @@ function update()
 function render()
 {
 	surface.clearRect(0,0,canvas.width,canvas.height);
-	surface.drawImage(mainBackground,0,0,1211,845);
+	surface.drawImage(mainBackground,0,0,1024,768);
 	
 	surface.drawImage(start, buttonX[0], buttonY[0], buttonWidth[0], buttonHeight[0]);
 	surface.drawImage(Continuar, buttonX[1], buttonY[1], buttonWidth[1], buttonHeight[1]);
@@ -146,21 +156,21 @@ function checkPos (mouseEvent){
 
 //function that checks the position of the mouse and either reloads the main menu or does something depending on which button is clicked
 function checkClick(mouseEvent){
-	if (mouseX > 405 && mouseX < 503 && mouseY > 545 && mouseY < 581){
+	if (mouseX > 390 && mouseX < 535 && mouseY > 510 && mouseY < 540){
 			loadCharacterSelectionScreen();
 			canvas.removeEventListener("mousemove", checkPos);
 			canvas.removeEventListener("mouseup", checkClick);
 		}
-	else if (mouseX > 350 && mouseX < 565 && mouseY > 600 && mouseY < 630){
+	else if (mouseX > 365 && mouseX < 575 && mouseY > 560 && mouseY < 590){
 			loadLevelSelectionScreen();
 	}
-	else if (mouseX > 388 && mouseX < 515 && mouseY > 650 && mouseY < 696){
+	else if (mouseX > 375 && mouseX < 550 && mouseY > 610 && mouseY < 640){
 			loadSettings();
 			canvas.removeEventListener("mousemove", checkPos);
 			canvas.removeEventListener("mouseup", checkClick);
 	}
-	else if (mouseX > 410 && mouseX < 489 && mouseY > 705 && mouseY < 736){ //this does not work for Firefox, only for Chrome
-			window.close();
+	else if (mouseX > 380 && mouseX < 560 && mouseY > 655 && mouseY < 685){ //this does not work for Firefox, only for Chrome
+			loadControls();
 			canvas.removeEventListener("mousemove", checkPos);
 			canvas.removeEventListener("mouseup", checkClick);
 		}

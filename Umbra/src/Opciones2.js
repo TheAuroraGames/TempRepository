@@ -1,6 +1,6 @@
 var canvas = document.querySelector("canvas");
 canvas.width = 1024;
-canvas.height = 768;
+canvas.height = 1024;
 
 var surface = canvas.getContext("2d");
 
@@ -27,10 +27,10 @@ SelecId.src = "../img/SelecId.png";
 Ingles.src = "../img/Ingles.png";
 Espanol.src = "../img/Espanol.png";
 
-var buttonX = [450,465,515,440,490,528,485,535,540];
-var buttonY = [85,150,200,245,300,340,390,440,475];
-var buttonWidth = [280,250,150,300,200,120,200,105,100];
-var buttonHeight = [60,75,70,85,85,80,50,65,65];
+var buttonX = [575,575,575,575,535,540];
+var buttonY = [150,200,300,350,440,485];
+var buttonWidth = [40,40,40,40,105,105];
+var buttonHeight = [40,40,40,40,40,40];
 
 var mouseX;
 var mouseY;
@@ -71,15 +71,15 @@ function render()
 	surface.clearRect(0,0,canvas.width,canvas.height);
 	surface.drawImage(SettingsBackground,0,0,1024,768);
 	
-	surface.drawImage(VolMusica, buttonX[0], buttonY[0], buttonWidth[0], buttonHeight[0]);
-	surface.drawImage(On, buttonX[1], buttonY[1], buttonWidth[1], buttonHeight[1]);
-	surface.drawImage(Off, buttonX[2], buttonY[2], buttonWidth[2], buttonHeight[2]);
-	surface.drawImage(VolEfec, buttonX[3], buttonY[3], buttonWidth[3], buttonHeight[3]);
-	surface.drawImage(On2, buttonX[4], buttonY[4], buttonWidth[4], buttonHeight[4]);
-	surface.drawImage(Off2, buttonX[5], buttonY[5], buttonWidth[5], buttonHeight[5]);
-	surface.drawImage(SelecId, buttonX[6], buttonY[6], buttonWidth[6], buttonHeight[6]);
-	surface.drawImage(Ingles, buttonX[7], buttonY[7], buttonWidth[7], buttonHeight[7]);
-	surface.drawImage(Espanol, buttonX[8], buttonY[8], buttonWidth[8], buttonHeight[8]);
+	surface.drawImage(VolMusica,440,95,300,85);
+	surface.drawImage(On, buttonX[0], buttonY[0], buttonWidth[0], buttonHeight[0]);
+	surface.drawImage(Off, buttonX[1], buttonY[1], buttonWidth[1], buttonHeight[1]);
+	surface.drawImage(VolEfec,440,215,300,85);
+	surface.drawImage(On2, buttonX[2], buttonY[2], buttonWidth[2], buttonHeight[2]);
+	surface.drawImage(Off2, buttonX[3], buttonY[3], buttonWidth[3], buttonHeight[3]);
+	surface.drawImage(SelecId,440,370,300,85);
+surface.drawImage(Ingles, buttonX[4], buttonY[4], buttonWidth[4], buttonHeight[4]);
+	surface.drawImage(Espanol, buttonX[5], buttonY[5], buttonWidth[5], buttonHeight[5]);
 	
 }
 

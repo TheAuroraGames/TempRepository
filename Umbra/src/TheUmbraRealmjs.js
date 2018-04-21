@@ -2,11 +2,18 @@ var canvas= document.querySelector("canvas");
 canvas.width = 1024;
 canvas.height = 1024;
 // RobinHP
-
 var BackgroundAudio = new Audio("../audio/Fighting Music.wav");
-BackgroundAudio.loop = true;
-BackgroundAudio.play();
-BackgroundAudio.Volume = 0.5;
+
+if(window.localStorage.getItem("bg")=="off"){
+	BackgroundAudio.Volume = 0.0;
+}
+else{
+	BackgroundAudio.loop = true;
+	BackgroundAudio.play();
+	BackgroundAudio.Volume = 0.5;
+	
+
+}
 
 window.localStorage.setItem("level","1");
 
@@ -518,15 +525,24 @@ if(vampDead||vampDying){
 	if (MoveTimer == 3 && VampPunchState == false)
 	{
 		VampPunchState = true;
-		VampPunchData.VampPunchSound.play();
-		
+		if(window.localStorage.getItem("fx")=="off"){
+			VampPunchData.VampPunchSound.Volume = 0.0;
+		}
+		else{
+			VampPunchData.VampPunchSound.play();
+		}
 	
 	}
 	else if(MoveTimer == 6 && VampJumpState == false)
 	{
 		VampJumpState = true;
 		VampisJumping=true;
-		VampJumpData.VampJumpSound.play();
+		if(window.localStorage.getItem("fx")=="off"){
+			VampJumpData.VampJumpSound.Volume=0.0;
+		}
+		else{
+			VampJumpData.VampJumpSound.play();
+		}
 	
 	}
 	
@@ -944,12 +960,23 @@ function onKeyDown(event)
 		{
 			upPressed = true;
 			isJumping = true;
-			RobinJumpData.JumpSound.play();
+			if(window.localStorage.getItem("fx")=="off"){
+				RobinJumpData.JumpSound.Volume = 0.0;
+			}
+			
+			else{
+				RobinJumpData.JumpSound.play();
+			}
 		}
 			break;
 		case 76: // L
 			punchPressed =true;
-			RobinAnimData.PunchSound.play();
+			if(window.localStorage.getItem("fx")=="off"){
+				RobinAnimData.PunchSound.Volume = 0.0;
+			}
+			else{
+				RobinAnimData.PunchSound.play();
+			}
 			break;
 		case 32://SpaceBar
 		if(vampDead == true)

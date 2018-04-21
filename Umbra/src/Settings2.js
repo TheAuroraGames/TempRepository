@@ -1,8 +1,22 @@
 var canvas = document.querySelector("canvas");
-canvas.width = 1211;
-canvas.height = 845;
+canvas.width = 1024;
+canvas.height = 1024;
 
 var surface = canvas.getContext("2d");
+
+var TextBarBorder = {
+	x:795,
+	y:675,
+	width:87,
+	height:45
+};
+
+var TextBar = {
+	x:800,
+	y:680,
+	width:75,
+	height:35
+};
 
 var uInt;
 
@@ -17,6 +31,16 @@ var LanguageSelection = new Image ();
 var English = new Image();
 var Spanish = new Image ();
 
+function loadMenu()
+{
+	if(window.localStorage.getItem("language")=="spanish"){
+			window.location.href = 'Menu.html';
+	}
+	else{
+		window.location.href = 'MainMenu.html';
+	}
+}
+
 backgroundMusic.src = "../img/BackgroundMusic.png";
 On.src = "../img/On.png";
 Off.src = "../img/Off.png";
@@ -27,10 +51,10 @@ LanguageSelection.src = "../img/SelectLanguage.png";
 English.src = "../img/English.png";
 Spanish.src = "../img/Spanish.png";
 
-var buttonX = [450,465,515,440,490,528,485,535,540];
-var buttonY = [85,150,200,245,300,340,390,440,475];
-var buttonWidth = [280,250,150,300,200,120,200,105,100];
-var buttonHeight = [60,75,70,85,85,80,50,65,65];
+var buttonX = [575,575,575,575,560,560];
+var buttonY = [150,200,300,345,440,485];
+var buttonWidth = [40,40,40,40,70,70];
+var buttonHeight = [40,40,40,40,40,40];
 
 var mouseX;
 var mouseY;
@@ -43,6 +67,9 @@ var handHeight = 30;
 
 createBackground();
 createHand();
+surface.font = "20px Arial";
+
+surface.textAlign = "left";
 
 function createBackground()
 {
@@ -69,17 +96,23 @@ function update()
 function render()
 {
 	surface.clearRect(0,0,canvas.width,canvas.height);
-	surface.drawImage(SettingsBackground,0,0,1211,845);
+	surface.drawImage(SettingsBackground,0,0,1024,768);
 	
-	surface.drawImage(backgroundMusic, buttonX[0], buttonY[0], buttonWidth[0], buttonHeight[0]);
-	surface.drawImage(On, buttonX[1], buttonY[1], buttonWidth[1], buttonHeight[1]);
-	surface.drawImage(Off, buttonX[2], buttonY[2], buttonWidth[2], buttonHeight[2]);
-	surface.drawImage(effectVol, buttonX[3], buttonY[3], buttonWidth[3], buttonHeight[3]);
-	surface.drawImage(On2, buttonX[4], buttonY[4], buttonWidth[4], buttonHeight[4]);
-	surface.drawImage(Off2, buttonX[5], buttonY[5], buttonWidth[5], buttonHeight[5]);
-	surface.drawImage(LanguageSelection, buttonX[6], buttonY[6], buttonWidth[6], buttonHeight[6]);
-	surface.drawImage(English, buttonX[7], buttonY[7], buttonWidth[7], buttonHeight[7]);
-	surface.drawImage(Spanish, buttonX[8], buttonY[8], buttonWidth[8], buttonHeight[8]);
+	surface.drawImage(backgroundMusic,450,85,280,60);
+	surface.drawImage(On, buttonX[0], buttonY[0], buttonWidth[0], buttonHeight[0]);
+	surface.drawImage(Off, buttonX[1], buttonY[1], buttonWidth[1], buttonHeight[1]);
+	surface.drawImage(effectVol,440,245,300,85);
+	surface.drawImage(On2, buttonX[2], buttonY[2], buttonWidth[2], buttonHeight[2]);
+	surface.drawImage(Off2, buttonX[3], buttonY[3], buttonWidth[3], buttonHeight[3]);
+	surface.drawImage(LanguageSelection,485,390,200,50);
+	surface.drawImage(English, buttonX[4], buttonY[4], buttonWidth[4], buttonHeight[4]);
+	surface.drawImage(Spanish, buttonX[5], buttonY[5], buttonWidth[5], buttonHeight[5]);
+	surface.fillStyle = "grey";
+	surface.fillRect(TextBarBorder.x,TextBarBorder.y,TextBarBorder.width,TextBarBorder.height);
+	surface.fillStyle = "black";
+	surface.fillRect(TextBar.x,TextBar.y,TextBar.width,TextBar.height);
+	surface.fillStyle = "white";
+	surface.fillText("Back",810,705);
 	
 }
 
@@ -112,5 +145,33 @@ function checkPos (mouseEvent){
 	}
 }
 
+function checkClick(mouseEvent){
+	if (mouseX > 575 && mouseX < 615 && mouseY > 150&& mouseY < 190){
+			window.localStorage.setItem("bg","on")
+		}
+	else if (mouseX > 575 && mouseX < 615 && mouseY > 200 && mouseY < 240){
+			window.localStorage.setItem("bg","off");
+	}
+	else if (mouseX > 575 && mouseX < 615 && mouseY > 300 && mouseY < 340){
+			window.localStorage.setItem("fx","on");
+	}
+	else if (mouseX > 575 && mouseX < 615 && mouseY > 345 && mouseY < 385){ //this does not work for Firefox, only for Chrome
+			window.localStorage.setItem("fx","off");
+		}
+	else if(mouseX > 560 && mouseX < 630 && mouseY > 440 && mouseY < 480)
+		{
+			window.localStorage.setItem("language","english");
+			
+		}
+	else if(mouseX > 560 && mouseX < 630 && mouseY > 485 && mouseY < 525)
+	{
+		window.localStorage.setItem("language","spanish");
+	}
+	else if(mouseX > 795 && mouseX < 882 && mouseY > 675 && mouseY < 720)
+	{
+		loadMenu();
+	}
 
+	
+	}	
 

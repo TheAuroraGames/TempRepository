@@ -5,9 +5,18 @@ canvas.height = 1024;
 var frameSpeed=33.34;
 
 var BackgroundAudio = new Audio("../audio/Fighting Music.wav");
-BackgroundAudio.loop = true;
-BackgroundAudio.play();
-BackgroundAudio.Volume = 0.5;
+
+if(window.localStorage.getItem("bg")=="off"){
+	BackgroundAudio.Volume = 0.0;
+}
+else{
+	
+	BackgroundAudio.loop = true;
+	BackgroundAudio.play();
+	BackgroundAudio.Volume = 0.5;
+
+}
+
 
 window.localStorage.setItem("level","3");
 
@@ -499,7 +508,12 @@ if(FrankDead||FrankDying){
 	if (MoveTimer == 4 && FrankPunchState == false)
 	{
 		FrankPunchState = true;
-		FrankPunchData.FrankPunchSound.play();
+		if(window.localStorage.getItem("fx")=="off"){
+			FrankPunchData.FrankPunchSound.Volume = 0.0;
+		}
+		else{
+			FrankPunchData.FrankPunchSound.play();
+		}
 		
 		
 	}
@@ -507,7 +521,12 @@ if(FrankDead||FrankDying){
 	{
 		FrankJumpState = true;
 		FrankisJumping = true;
-		FrankJumpData.FrankJumpSound.play();
+		if(window.localStorage.getItem("fx")=="off"){
+			FrankJumpData.FrankJumpSound.Volume = 0.0;
+		}
+		else{
+			FrankJumpData.FrankJumpSound.play();
+		}
 		
 	}
 	
@@ -894,12 +913,22 @@ function onKeyDown(event)
 		{
 			upPressed = true;
 			isJumping = true;
-			RobinJumpData.JumpSound.play();
+			if(window.localStorage.getItem("fx")=="off"){
+				RobinJumpData.JumpSound.Volume = 0.0;
+			}
+			else{
+				RobinJumpData.JumpSound.play();
+			}
 		}
 			break;
 		case 76: // L
 			punchPressed =true;
+			if(window.localStorage.getItem("fx")=="off"){
+				RobinAnimData.PunchSound.Volume = 0.0;
+			}
+			else{
 			RobinAnimData.PunchSound.play();
+			}
 			break;
 		case 32:
 		if(FrankDead == true)
