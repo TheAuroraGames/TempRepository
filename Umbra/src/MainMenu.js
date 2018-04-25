@@ -7,7 +7,7 @@ canvas.height = 1024;
 var surface = canvas.getContext("2d");
 
 var uInt;
-
+window.localStorage.setItem("language","english");
 //variables for each of the buttons
 var mainBackground;
 var start = new Image();
